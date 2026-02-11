@@ -13,7 +13,7 @@ public class AirCraft {
         QUEUE,
         CANCEL,
         DIVERT,
-        RUNWAY;
+        RUNWAY,
         ;
     }
 
@@ -147,21 +147,21 @@ public class AirCraft {
 	/**
 	 * @return the altitude
 	 */
-	public float getAltitude() {
+	public double getAltitude() {
 		return altitude;
 	}
 
 	/**
 	 * @return the fuel
 	 */
-	public float getFuel() {
+	public double getFuel() {
 		return fuel;
 	}
 
 	/**
 	 * @return the speed
 	 */
-	public float getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 
