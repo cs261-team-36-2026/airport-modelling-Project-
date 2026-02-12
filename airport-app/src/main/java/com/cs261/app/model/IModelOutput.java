@@ -2,7 +2,7 @@ package com.cs261.app.model;
 
 public interface IModelOutput {
     /**
-    TODO: add getMaxArrivals etc stuff  
+    doneTODO: add getMaxArrivals etc stuff  
     */ 
     //queue
     List<String> getHoldingQueueOrder();
