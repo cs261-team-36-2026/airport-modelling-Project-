@@ -1,11 +1,16 @@
+com\cs261\app\model\RunWay$OperatingMode.class
 com\cs261\app\model\RunWay.class
 com\cs261\app\controller\ISimLoop.class
 com\cs261\app\model\IModelOutput.class
 com\cs261\app\App.class
 com\cs261\app\model\AirCraft.class
 com\cs261\app\StartPage.class
+com\cs261\app\model\AirCraft$EmergencyStatus.class
 com\cs261\app\StartNewPage.class
+com\cs261\app\model\AirCraft$FlightType.class
 com\cs261\app\model\RunWayMap.class
 com\cs261\app\model\TakeOffQueue.class
+com\cs261\app\model\AirCraft$ZoneStatus.class
 com\cs261\app\model\AirCraftMap.class
 com\cs261\app\model\HoldingQueue.class
+com\cs261\app\model\RunWay$OperationStatus.class
