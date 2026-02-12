@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TakeOffQueueTest {
 
     @Test
-    void fifo_order_is_preserved() {
+    void fifoOrderIsPreserved() {
         // TODO: Once TakeOffQueue has enqueue/dequeue methods:
         assertTrue(true); // placeholder so file compiles
     }
