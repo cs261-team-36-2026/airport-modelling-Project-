@@ -1,5 +1,7 @@
 package com.cs261.app.model;
 
+import com.cs261.app.model.AirCraft.FlightType;
+
 public class HoldingQueue {
 	/** XXX: basically i realised you dont need a queue at all to check the priority you just need to check the emergency
 	 * status. TEST THIS !!!
@@ -113,9 +115,14 @@ public class HoldingQueue {
 	 * @param plane to be added
 	 */
 	public void enqueue(AirCraft plane) {
+		if (plane.getFlightType() != FlightType.ARRIVAL) {
+			return;
+		}
+		
 		if (size >= capacity) {
 			resize();
 		}
+		
 		heap[size] = plane;
 		size++;
 		upHeap(size - 1);
@@ -175,6 +182,19 @@ public class HoldingQueue {
 		}
 	}
 	
+	/**
+	 * Traverse heap O(n)
+	 * worst case O(nlogn) if it so happens that every plane has a fuel emergency for some reason
+	 */
+	public void updateHolding() {
+		for (int i = 0; i < size; i++) {
+			if (heap[i].updateHoldingFlight()) {
+				upHeap(i); // might need to move it up the heap
+			} else { // no fuel emergency for now
+				continue;
+			}
+		}
+	}
 	
 	
 	/**
