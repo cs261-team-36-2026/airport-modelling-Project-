@@ -9,4 +9,9 @@ public class ArrivalModel {
 		this.aircraftMap = map;
 		this.holdingPattern = queue;
 	}
+	
+	public void updateArrivals(AirCraft newPlane, int currentTime, int prevTime) {
+		holdingPattern.enqueue(newPlane);
+		holdingPattern.updateHolding();
+	}
 }
