@@ -8,6 +8,7 @@ import com.cs261.app.model.HoldingQueue;
 import com.cs261.app.model.IModelOutput;
 import com.cs261.app.model.RunWayMap;
 import com.cs261.app.model.TakeOffQueue;
+import com.cs261.app.model.TrafficController;
 import com.cs261.app.model.AirCraft;
 import com.cs261.app.model.RunWay;
 
@@ -18,6 +19,7 @@ public class SimLoop extends Task<IModelOutput>{
 	private TakeOffQueue takeOffQueue;
 	private RunWayMap runways;
 	private ArrivalModel arrivalModel;
+	private TrafficController trafficModel;
 	private int runtime;
 	private int currentTime;
 	private int prevTime;
@@ -34,6 +36,7 @@ public class SimLoop extends Task<IModelOutput>{
 		this.holdingPattern = new HoldingQueue(500);
 		// take off queue,datagen, departure model
 		this.arrivalModel = new ArrivalModel(aircraftMap, holdingPattern);
+		this.trafficModel = new TrafficController(this.aircraftMap, this.runways, this.holdingPattern, this.takeOffQueue)
 	}
 	
 	@Override
