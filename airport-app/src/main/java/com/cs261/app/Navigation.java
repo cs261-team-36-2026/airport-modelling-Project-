@@ -8,8 +8,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
-public class StartPage 
+public class Navigation 
 {
+    public void goBack(ActionEvent event) throws IOException 
+    {
+
+        Parent root = FXMLLoader.load(
+        getClass().getResource("start.fxml"));
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene().getWindow();
+
+        stage.getScene().setRoot(root);
+    }   
+
     public void goToSecondPage(ActionEvent event) throws IOException 
     {
 
@@ -23,5 +35,13 @@ public class StartPage
                 .getScene().getWindow();
 
         stage.getScene().setRoot(root);   
+    }
+
+    public void closeApp(ActionEvent event) throws IOException 
+    {
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene().getWindow();
+
+        stage.close();
     }
 }
