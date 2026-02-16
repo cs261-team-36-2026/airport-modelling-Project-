@@ -2,6 +2,7 @@ package com.cs261.app;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -11,8 +12,13 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(
                 App.class.getResource("/com/cs261/app/start.fxml"));
 
-        Scene scene = new Scene(loader.load());
 
+        Image icon = new Image(
+        getClass().getResource("/com/cs261/app/companyLogo.png").toExternalForm()
+        );
+        Scene scene = new Scene(loader.load());
+        stage.setMaximized(true);
+        stage.getIcons().add(icon);
         stage.setTitle("Airport App");
         stage.setScene(scene);
         stage.show();

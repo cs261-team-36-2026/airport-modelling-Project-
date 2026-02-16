@@ -1,10 +1,10 @@
 com\cs261\app\model\RunWay$OperatingMode.class
 com\cs261\app\model\RunWay.class
+com\cs261\app\Navigation.class
 com\cs261\app\controller\ISimLoop.class
 com\cs261\app\model\IModelOutput.class
 com\cs261\app\App.class
 com\cs261\app\model\AirCraft.class
-com\cs261\app\StartPage.class
 com\cs261\app\model\AirCraft$EmergencyStatus.class
 com\cs261\app\StartNewPage.class
 com\cs261\app\model\AirCraft$FlightType.class

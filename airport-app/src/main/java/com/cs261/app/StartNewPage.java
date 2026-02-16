@@ -10,15 +10,4 @@ import javafx.stage.Stage;
 
 public class StartNewPage 
 {
-    public void goBack(ActionEvent event) throws IOException 
-    {
-
-        Parent root = FXMLLoader.load(
-        getClass().getResource("start.fxml"));
-
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene().getWindow();
-
-        stage.getScene().setRoot(root);
-    }   
-}
+}  
