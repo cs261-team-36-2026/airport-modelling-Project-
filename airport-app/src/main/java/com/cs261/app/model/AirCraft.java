@@ -217,4 +217,17 @@ public class AirCraft {
     		return false; // no fuel emergency
     	}
     }
+    /**
+     * Every iteration of the simulation loop, the arrival plane is updated when it is in
+     * the holding queue by updating its fuel, its emergency status and its altitude.
+     * @return true if there is a fuel emergency, false otherwise.
+     */
+    public boolean updateHoldingFlight() {
+    	updateFuel(2);
+    	updateAltitude();
+    	return updateFuelEmergency(); 
+    }
+    
+    // TODO: updateTakeOffFlight()
+    
 }

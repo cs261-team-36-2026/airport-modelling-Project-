@@ -17,6 +17,7 @@ public class RunWay {
 		INSPECTION,
 		SNOW,
 		EQUIPFAIL,
+		UNAVAIL, // because plane is on it 
 		;
 	}
 	
@@ -27,6 +28,8 @@ public class RunWay {
 	private OperationStatus status;
 	private OperatingMode mode;
 	private int timeSpent; // time current aircraft has spent on the runway
+	
+	private OperatingMode mixedModeTurn;
 	
 	public RunWay(int length, int bearing, OperatingMode mode, OperationStatus status) {
 		this.length = length;
@@ -42,6 +45,19 @@ public class RunWay {
 		} else {
 			runwayNumber = Integer.toString(number);
 		}
+		
+		if (mode == OperatingMode.MIXED) {
+			this.mixedModeTurn = OperatingMode.LANDING; // start with landings
+		} else {
+			this.mixedModeTurn = mode; // doesnt change
+		}
+	}
+
+	/**
+	 * @return the mixedModeTurn
+	 */
+	public OperatingMode getMixedModeTurn() {
+		return mixedModeTurn;
 	}
 
 	/**
@@ -56,6 +72,14 @@ public class RunWay {
 	 */
 	public void addPlane(String currentPlane) {
 		this.currentPlane = currentPlane;
+		this.status = OperationStatus.UNAVAIL;
+		if (this.mode == OperatingMode.MIXED) {
+			if (this.mixedModeTurn == OperatingMode.LANDING) {
+				this.mixedModeTurn = OperatingMode.TAKEOFF;
+			} else {
+				this.mixedModeTurn = OperatingMode.LANDING;
+			}
+		}
 	}
 
 	/**
@@ -109,7 +133,7 @@ public class RunWay {
 	
 	
 	/**
-	 * NEED: UPDATE TIME SPENT (SET/RESET/CHECK), SET MODE BY CONVERTING MODE (WHICH IS AN UPDATE METHOD), 
+	 *TODO: NEED: UPDATE TIME SPENT (SET/RESET/CHECK), SET MODE BY CONVERTING MODE (WHICH IS AN UPDATE METHOD), 
 	 */
 	
 }
