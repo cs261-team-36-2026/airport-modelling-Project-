@@ -11,7 +11,8 @@ public class App extends Application {
         
         FXMLLoader loader = new FXMLLoader(
                 App.class.getResource("/com/cs261/app/start.fxml"));
-
+        //https://www.youtube.com/watch?v=9XJicRt_FaI
+        //Scene scene = new Scene(loader.load());
 
         Image icon = new Image(
         getClass().getResource("/com/cs261/app/companyLogo.png").toExternalForm()
