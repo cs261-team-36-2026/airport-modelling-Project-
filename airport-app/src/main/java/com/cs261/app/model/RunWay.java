@@ -1,15 +1,24 @@
 package com.cs261.app.model;
 
+
 public class RunWay {
     /*
     TODO: fields, getters, setters, convert to... methods as described in design doc class diagrma
     */
 	
 	public static enum OperatingMode {
-		LANDING,
-		TAKEOFF,
-		MIXED,
+		LANDING(1),
+		TAKEOFF(2),
+		MIXED(3),
 		;
+
+		private final int code;
+		private OperatingMode(int code){
+			this.code = code;
+		}
+		public int getCode(){
+			return this.code;
+		}
 	}
 	
 	public static enum OperationStatus {
@@ -28,16 +37,18 @@ public class RunWay {
 	private OperationStatus status;
 	private OperatingMode mode;
 	private int timeSpent; // time current aircraft has spent on the runway
-	
+	private AirCraftMap airCraftMap;
+
 	private OperatingMode mixedModeTurn;
 	
-	public RunWay(int length, int bearing, OperatingMode mode, OperationStatus status) {
+	public RunWay(int length, int bearing, OperatingMode mode, OperationStatus status, AirCraftMap aircrafts) {
 		this.length = length;
 		this.bearing = bearing;
 		this.mode = mode;
 		this.status = status;
-		this.currentPlane = null;
+		this.currentPlane = "";
 		this.timeSpent = 0;
+		this.airCraftMap = aircrafts;
 		
 		int number = Math.round(bearing / 10.0f); // divide by 10 and round to round to nearest 10 degrees, and as math.round returns integer truncates last digit
 		if (number < 10 && number >= 0) { // convert to string, but add 0 if the rounded and truncated bearing is a single digit
@@ -71,16 +82,33 @@ public class RunWay {
 	 * @param currentPlane the currentPlane to set
 	 */
 	public void addPlane(String currentPlane) {
-		this.currentPlane = currentPlane;
-		this.status = OperationStatus.UNAVAIL;
-		if (this.mode == OperatingMode.MIXED) {
-			if (this.mixedModeTurn == OperatingMode.LANDING) {
-				this.mixedModeTurn = OperatingMode.TAKEOFF;
-			} else {
-				this.mixedModeTurn = OperatingMode.LANDING;
+		AirCraft plane = airCraftMap.get(currentPlane);
+		if (plane.getFlightType().getCode() == mixedModeTurn.getCode()){
+			this.currentPlane = currentPlane;
+			plane.addToRunway(runwayNumber);
+			this.status = OperationStatus.UNAVAIL;
+
+			// switch mode of mixed runway
+			if (this.mode == OperatingMode.MIXED) {
+				if (this.mixedModeTurn == OperatingMode.LANDING) {
+					this.mixedModeTurn = OperatingMode.TAKEOFF;
+				} else {
+					this.mixedModeTurn = OperatingMode.LANDING;
+				}
 			}
 		}
 	}
+
+	/**
+	 * TODO: add error checking on this
+	 * remove plane
+	 * @return
+	 */
+	public void removePlane(){
+		this.currentPlane = null;
+	}
+
+
 
 	/**
 	 * @return the status
@@ -135,5 +163,44 @@ public class RunWay {
 	/**
 	 *TODO: NEED: UPDATE TIME SPENT (SET/RESET/CHECK), SET MODE BY CONVERTING MODE (WHICH IS AN UPDATE METHOD), 
 	 */
+
+	/**
+	 * increment time spent by tick mins
+	 * @return true if it has been able to increase it, false if no increase because the time has elapsed
+	 */
+	public boolean updateTime(){
+		if (timeSpent >= Constants.runwayTime){
+			resetTimeSpent();
+			return false;
+		} else if (!hasPlane()){
+			resetTimeSpent();
+			return false;
+		} 
+		else {
+			timeSpent += Constants.timeInc;
+			return true;
+		}
+	}
+	/**
+	 * TODO: add error checking for this
+	 * reset time spent to 0 and make plane exit the simulation
+	 * @return true if it has been able to reset it false otherwise
+	 */
+	public boolean resetTimeSpent(){
+		this.timeSpent = 0;
+		removePlane();
+		return true;
+	}
+
+	/**
+	 * checks if a plane is currently assigned
+	 */
+	public boolean hasPlane(){
+		if (currentPlane == null){
+			return false;
+		} else {
+			return true;
+		}
+	}
 	
 }
