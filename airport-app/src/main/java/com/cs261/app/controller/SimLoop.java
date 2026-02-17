@@ -11,6 +11,7 @@ import com.cs261.app.model.TakeOffQueue;
 import com.cs261.app.model.TrafficController;
 import com.cs261.app.model.AirCraft;
 import com.cs261.app.model.RunWay;
+import com.cs261.app.model.DataGen;
 
 
 public class SimLoop extends Task<IModelOutput>{
@@ -24,6 +25,7 @@ public class SimLoop extends Task<IModelOutput>{
 	private int currentTime;
 	private int prevTime;
 	private final int timeInc = 2;
+	private DataGen dataGen;
 	
 	// TODO: add data gen and departure model
 	
@@ -36,13 +38,16 @@ public class SimLoop extends Task<IModelOutput>{
 		this.holdingPattern = new HoldingQueue(500);
 		// take off queue,datagen, departure model
 		this.arrivalModel = new ArrivalModel(aircraftMap, holdingPattern);
-		this.trafficModel = new TrafficController(this.aircraftMap, this.runways, this.holdingPattern, this.takeOffQueue)
+		this.trafficModel = new TrafficController(this.aircraftMap, this.runways, this.holdingPattern, this.takeOffQueue);
+		this.dataGen = new DataGen(userRuntime, 15, 15); // init with runtime and default flow rate per hour.
 	}
 	
 	@Override
 	protected IModelOutput call() throws Exception {
 		// TODO Auto-generated method stub
 		while (currentTime != runtime) {
+			// get flights for this tick
+
 			// traffic controller update
 			// arrivals update
 			arrivalModel.updateArrivals(null, currentTime, prevTime);
