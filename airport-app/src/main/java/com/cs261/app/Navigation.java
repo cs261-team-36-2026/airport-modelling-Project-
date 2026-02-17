@@ -27,7 +27,7 @@ public class Navigation
 
         
         FXMLLoader loader =
-                new FXMLLoader(getClass().getResource("startNew.fxml"));
+                new FXMLLoader(getClass().getResource("inputForm.fxml"));
 
         Parent root = loader.load();
 
