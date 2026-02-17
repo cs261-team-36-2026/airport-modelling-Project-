@@ -37,7 +37,7 @@ public class Navigation
         stage.getScene().setRoot(root);   
     }
 
-<<<<<<< Updated upstream
+
     public void closeApp(ActionEvent event) throws IOException 
     {
         Stage stage = (Stage) ((Node) event.getSource())
@@ -45,18 +45,5 @@ public class Navigation
 
         stage.close();
     }
-=======
 
-    public void goBack(ActionEvent event) throws IOException 
-    {
-
-        Parent root = FXMLLoader.load(
-        getClass().getResource("start.fxml"));
-
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene().getWindow();
-
-        stage.getScene().setRoot(root);
-    }   
->>>>>>> Stashed changes
 }
