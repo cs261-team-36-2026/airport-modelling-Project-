@@ -12,13 +12,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color: #A6BEDA;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color: #A6BEDA;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cs261.app.NewSim">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="540.0" prefWidth="600.0" StackPane.alignment="CENTER">
          <children>
-            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #4b4846; -fx-border-width: 10; -fx-padding: 10; -fx-effect: dropshadow(gaussian, #4B4846, 15, 0, 0, 5);">
+            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: #4b4846; -fx-border-width: 10; -fx-padding: 10; -fx-effect: dropshadow(gaussian, #4B4846, 15, 0, 0, 5);">
                <content>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" fx:id="runwayBox">
                      <children>
                         <HBox prefHeight="20.0" prefWidth="200.0">
                            <children>
@@ -85,7 +85,7 @@
                               </Label>
                               <HBox prefHeight="20.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Runway Length">
+                                    <Label text="Runway Length (Metres)">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
@@ -102,7 +102,7 @@
                               </HBox>
                               <HBox prefHeight="20.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Bearing">
+                                    <Label text="Bearing (Degrees)">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
@@ -135,18 +135,26 @@
                                        </font>
                                     </Label>
                                     <ComboBox fx:id="statusBox" prefWidth="150.0" />
+                                    <Button mnemonicParsing="false" text="Remove This Runway">
+                                       <HBox.margin>
+                                          <Insets left="130.0" />
+                                       </HBox.margin>
+                                    </Button>
                                  </children>
                               </HBox>
                            </children>
                         </VBox>
-                        <Button mnemonicParsing="false" text="Add Runway" />
+                        <Button mnemonicParsing="false" onAction="#addSection" text="Add Runway" />
                      </children>
                   </VBox>
                </content>
             </ScrollPane>
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Back" AnchorPane.bottomAnchor="0.0" />
-          <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Start" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" />
+            <HBox alignment="BOTTOM_LEFT" prefHeight="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="65.0" text="Back" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="40.0" text="Example error message" textFill="RED" HBox.hgrow="ALWAYS" />
+                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Start" />
+               </children></HBox>
          </children>
       </AnchorPane>
    </children>
