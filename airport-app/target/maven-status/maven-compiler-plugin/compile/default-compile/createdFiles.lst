@@ -1,5 +1,6 @@
 com\cs261\app\model\RunWay.class
 com\cs261\app\model\DataGen$AirportData.class
+com\cs261\app\Navigation.class
 com\cs261\app\controller\ISimLoop.class
 com\cs261\app\model\ArrivalModel.class
 com\cs261\app\model\IModelOutput.class
@@ -14,6 +15,12 @@ com\cs261\app\StartPage.class
 com\cs261\app\model\AirCraft$EmergencyStatus.class
 com\cs261\app\StartNewPage.class
 com\cs261\app\model\DataGen$OperatorData.class
+com\cs261\app\controller\SimLoop.class
+com\cs261\app\NewSim.class
+com\cs261\app\model\TrafficController.class
+com\cs261\app\model\RunWay$OperatingMode.class
+com\cs261\app\model\AirCraft$EmergencyStatus.class
+com\cs261\app\StartNewPage.class
 com\cs261\app\model\AirCraft$FlightType.class
 com\cs261\app\model\RunWayMap.class
 com\cs261\app\model\TakeOffQueue.class

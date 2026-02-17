@@ -25,7 +25,11 @@ public class TrafficController {
 	}
 
 	public void updateTraffic(int currentTime, int privateTime) {
-		
+		// get stuff out of holding queue
+		// get stuff out of take off queue
+		// check diversions
+		// convert runway
+		// 
 	}
 	
 	

@@ -1,17 +1,19 @@
 package com.cs261.app.controller;
 
-import javafx.concurrent.Task;
-import java.util.concurrent.TimeUnit;
 import com.cs261.app.model.AirCraftMap;
 import com.cs261.app.model.ArrivalModel;
+import com.cs261.app.model.Constants;
 import com.cs261.app.model.HoldingQueue;
 import com.cs261.app.model.IModelOutput;
+import com.cs261.app.model.RunWay;
 import com.cs261.app.model.RunWayMap;
 import com.cs261.app.model.TakeOffQueue;
 import com.cs261.app.model.TrafficController;
 import com.cs261.app.model.AirCraft;
 import com.cs261.app.model.RunWay;
 import com.cs261.app.model.DataGen;
+
+import javafx.concurrent.Task;
 
 
 public class SimLoop extends Task<IModelOutput>{
@@ -52,7 +54,7 @@ public class SimLoop extends Task<IModelOutput>{
 			// arrivals update
 			arrivalModel.updateArrivals(null, currentTime, prevTime);
 			// departures update
-			currentTime += timeInc;
+			currentTime += Constants.timeInc;
 		}
 		
 		return null;
