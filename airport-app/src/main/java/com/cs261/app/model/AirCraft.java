@@ -244,7 +244,7 @@ public class AirCraft {
 	}
     
 	/**
-	 * @return true  if the plane has been assigned to a runway otherwise false
+	 * @return true if the plane has been assigned to a runway otherwise false
 	 */
 	public boolean isOnRunway(){
 		if (this.assignedRunway != ""){

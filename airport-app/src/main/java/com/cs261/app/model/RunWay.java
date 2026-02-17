@@ -106,6 +106,7 @@ public class RunWay {
 	 */
 	public void removePlane(){
 		this.currentPlane = null;
+		this.status = OperationStatus.AVAILABLE;
 	}
 
 
