@@ -72,6 +72,13 @@ public class NewSim
 
                 VBox newSection = loader.load();
 
+
+                // 🔥 Get the controller
+                RunwayInputController controller = loader.getController();
+
+                // 🔥 Modify something inside the FXML
+                controller.setRunwayTitle("Runway " + runways);
+
                 int size = runwayBox.getChildren().size();
 
                 if (size >= 1) 
@@ -92,4 +99,20 @@ public class NewSim
         }
        
     }
+
+    @FXML
+    private void removeSection() 
+    {
+        if (runways > 1) 
+        {
+            runways--;
+            int size = runwayBox.getChildren().size();
+            runwayBox.getChildren().remove(size - 2);
+        }
+    }
+
+
+
+
+
 }
