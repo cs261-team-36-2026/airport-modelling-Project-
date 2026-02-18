@@ -43,4 +43,6 @@ public class RunWayMap {
 		return null;
 	}
 	
+	
+	// list of unavailable runways or an update method on them
 }

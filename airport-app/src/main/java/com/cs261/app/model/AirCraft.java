@@ -8,8 +8,7 @@ public class AirCraft {
     */
 
     public static enum ZoneStatus{
-        LAND,
-        TAKEOFF,
+        EXIT, // as in has exited the simulation
         QUEUE,
         CANCEL,
         DIVERT,
@@ -18,9 +17,17 @@ public class AirCraft {
     }
 
     public static enum FlightType{
-        ARRIVAL,
-        DEPARTURE,
+        ARRIVAL(1),
+        DEPARTURE(2),
         ;
+
+		private final int code;
+		private FlightType(int code){
+			this.code = code;
+		}
+		public int getCode(){
+			return this.code;
+		}
     }
 
     public static enum EmergencyStatus {
@@ -55,8 +62,8 @@ public class AirCraft {
     private EmergencyStatus emergencyStatus;
     private ZoneStatus zoneStatus; // arrived, took off, cancelled, diverted 
     private FlightType flightType; // arrival or departure
-    
-    private final double fuelBurn = 2.70;
+    private String assignedRunway;
+
 
 
     public AirCraft(FlightType type, String callsign, String operator, String origin, String dest, LocalDateTime scheduled, LocalDateTime entryTime, float speed, float fuel, float alt, EmergencyStatus status){
@@ -71,6 +78,7 @@ public class AirCraft {
         this.fuel = fuel;
         this.altitude = alt;
         this.emergencyStatus = status;
+		this.assignedRunway = "";
 
         this.exitTime = null;
         this.zoneStatus =  ZoneStatus.QUEUE;
@@ -188,34 +196,34 @@ public class AirCraft {
      * @param t fuel decrease in t minutes
      */
     public void updateFuel(int t){
-        this.fuel = this.fuel - (((this.speed * 1.852) * (t/60) * this.fuelBurn) / 0.8029);
+        this.fuel = this.fuel - (((this.speed * 1.852) * (t/60) * Constants.fuelBurn) / 0.8029);
     }
     
     /**
      * @return the number of hours of fuel remaining 
      */
     public double fuelRemainingHrs(){
-    	double hrs = ((this.fuel * 0.8029) / this.fuelBurn) * (1 / this.speed);
-    	return hrs;
+    	double hrs = ((this.fuel * 0.8029) / Constants.fuelBurn) * (1 / this.speed);
+		return hrs;
     }
     
     /**
      * TODO: FIX UPDATE METHOD FOR ALTITUDE
      */
     public void updateAltitude(){
-    	this.altitude -= 1000;
+		this.altitude -= 1000;
     }
     /**
      * Updates emergency status if there is a fuel emergency.
      * @return true if there is a fuel emergency, false otherwise.
      */
     public boolean updateFuelEmergency(){
-    	if (fuelRemainingHrs() <= 0.25) {
-    		this.emergencyStatus = EmergencyStatus.FUEL;
+		if (fuelRemainingHrs() <= 0.25) {
+			this.emergencyStatus = EmergencyStatus.FUEL;
     		return true; // there is a fuel emergency
-    	} else {
-    		return false; // no fuel emergency
-    	}
+		} else {
+			return false; // no fuel emergency
+		}
     }
     /**
      * Every iteration of the simulation loop, the arrival plane is updated when it is in
@@ -223,11 +231,33 @@ public class AirCraft {
      * @return true if there is a fuel emergency, false otherwise.
      */
     public boolean updateHoldingFlight() {
-    	updateFuel(2);
-    	updateAltitude();
-    	return updateFuelEmergency(); 
+		updateFuel(2);
+		updateAltitude();
+		return updateFuelEmergency(); 
     }
     
     // TODO: updateTakeOffFlight()
+
+	public void addToRunway(String runway){
+		this.assignedRunway = runway;
+		this.zoneStatus = ZoneStatus.RUNWAY;
+	}
     
+	/**
+	 * @return true if the plane has been assigned to a runway otherwise false
+	 */
+	public boolean isOnRunway(){
+		if (this.assignedRunway != ""){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * @return get the runway the plane was assigned to
+	 */
+	public String getRunway(){
+		return this.assignedRunway;
+	}
 }

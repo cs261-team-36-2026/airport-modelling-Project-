@@ -2,6 +2,7 @@ package com.cs261.app.controller;
 
 import com.cs261.app.model.AirCraftMap;
 import com.cs261.app.model.ArrivalModel;
+import com.cs261.app.model.Constants;
 import com.cs261.app.model.HoldingQueue;
 import com.cs261.app.model.IModelOutput;
 import com.cs261.app.model.RunWay;
@@ -22,7 +23,6 @@ public class SimLoop extends Task<IModelOutput>{
 	private int runtime;
 	private int currentTime;
 	private int prevTime;
-	private final int timeInc = 2;
 	
 	// TODO: add data gen and departure model
 	
@@ -46,7 +46,7 @@ public class SimLoop extends Task<IModelOutput>{
 			// arrivals update
 			arrivalModel.updateArrivals(null, currentTime, prevTime);
 			// departures update
-			currentTime += timeInc;
+			currentTime += Constants.timeInc;
 		}
 		
 		return null;
