@@ -91,14 +91,6 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField HBox.hgrow="ALWAYS">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="40.0" right="20.0" />
-                                       </HBox.margin>
-                                    </TextField>
                                  </children>
                               </HBox>
                               <HBox prefHeight="20.0" prefWidth="200.0">
@@ -128,16 +120,59 @@
                                     <ComboBox fx:id="modeBox" prefWidth="150.0" />
                                  </children>
                               </HBox>
-                              <HBox prefHeight="20.0" prefWidth="200.0">
+                              <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label text="Operational Status:">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Label>
-                                    <ComboBox fx:id="statusBox" prefWidth="150.0" />
+                                    <HBox prefHeight="20.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Operational Status:">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="statusBox" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Label" />
+                                          <TextField promptText="Days">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </TextField>
+                                          <Label text=":">
+                                             <font>
+                                                <Font size="30.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField promptText="Hours">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </TextField>
+                                          <Label text=":">
+                                             <font>
+                                                <Font size="30.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField promptText="Minutes">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </TextField>
+                                          <Label text="Label" />
+                                          <TextField HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="40.0" right="20.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </VBox>
                            </children>
                         </VBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">

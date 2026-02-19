@@ -12,6 +12,7 @@ com\cs261\app\NewSim.class
 com\cs261\app\model\TrafficController.class
 com\cs261\app\RunwayInputController.class
 com\cs261\app\model\RunWay$OperatingMode.class
+com\cs261\app\model\ModelOutput.class
 com\cs261\app\model\AirCraft$EmergencyStatus.class
 com\cs261\app\StartNewPage.class
 com\cs261\app\model\AirCraft$FlightType.class
