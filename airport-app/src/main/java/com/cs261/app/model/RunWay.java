@@ -1,5 +1,6 @@
 package com.cs261.app.model;
 
+import com.cs261.app.model.AirCraft.EmergencyStatus;
 
 public class RunWay {
     /*
@@ -81,15 +82,15 @@ public class RunWay {
 	/**
 	 * @param currentPlane the currentPlane to set
 	 */
-	public void addPlane(String currentPlane) {
+	public void addPlane(String currentPlane, AirCraft.EmergencyStatus status) {
 		AirCraft plane = airCraftMap.get(currentPlane);
 		if (plane.getFlightType().getCode() == mixedModeTurn.getCode()){
 			this.currentPlane = currentPlane;
 			plane.addToRunway(runwayNumber);
 			this.status = OperationStatus.UNAVAIL;
 
-			// switch mode of mixed runway
-			if (this.mode == OperatingMode.MIXED) {
+			// switch mode of mixed runway, if there was no emergency 
+			if (this.mode == OperatingMode.MIXED && status == AirCraft.EmergencyStatus.NONE) {
 				if (this.mixedModeTurn == OperatingMode.LANDING) {
 					this.mixedModeTurn = OperatingMode.TAKEOFF;
 				} else {

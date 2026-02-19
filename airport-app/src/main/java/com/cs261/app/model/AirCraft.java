@@ -63,7 +63,7 @@ public class AirCraft {
     private ZoneStatus zoneStatus; // arrived, took off, cancelled, diverted 
     private FlightType flightType; // arrival or departure
     private String assignedRunway;
-
+	private int emergencyTimeAt; // the number of ticks at which it went into emergency
 
 
     public AirCraft(FlightType type, String callsign, String operator, String origin, String dest, LocalDateTime scheduled, LocalDateTime entryTime, float speed, float fuel, float alt, EmergencyStatus status){
@@ -185,6 +185,13 @@ public class AirCraft {
 	 */
 	public FlightType getFlightType() {
 		return flightType;
+	}
+
+	/**
+	 * @return the emergency 'time stamp'
+	 */
+	public int getEmergencyTime(){
+		return emergencyTimeAt;
 	}
 
 	// update: fuel, altitude (idk yet for that), emergency according to FUEL

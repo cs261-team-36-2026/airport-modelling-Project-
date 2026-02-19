@@ -45,7 +45,19 @@ public class RunWayMap {
 		return null;
 	}
 	
-	
+	/**
+	 * Retrieve an available mixed runway regardless of its turn
+	 * @return
+	 */
+	public RunWay getMixedRunWay(){
+		for (int i = 0; i < runways.length; i++){
+			if (runways[i].getMode() == OperatingMode.MIXED && runways[i].getStatus() == OperationStatus.AVAILABLE){
+				return runways[i];
+			}
+		}
+		return null;
+	}
+
 	// list of unavailable runways or an update method on them
 
 	public ArrayList<RunWay> getBusyRunway(OperatingMode mode){

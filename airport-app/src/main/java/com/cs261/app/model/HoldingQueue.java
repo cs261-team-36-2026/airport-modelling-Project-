@@ -1,5 +1,7 @@
 package com.cs261.app.model;
 
+import java.util.ArrayList;
+
 import com.cs261.app.model.AirCraft.FlightType;
 
 public class HoldingQueue {
@@ -195,8 +197,37 @@ public class HoldingQueue {
 			}
 		}
 	}
+
+	/**
+	 * return first node in priority queue without removing it
+	 */
+	public AirCraft top(){
+		if (isEmpty()) {
+			return null;
+		} else {
+			return heap[0];
+		}
+	}
 	
-	
+
+	/**
+	 * Get all the planes that are in emergency right now 
+	 */
+
+	public ArrayList<AirCraft> getEmergencyPlanes(){
+		ArrayList<AirCraft> temp = new ArrayList<>();
+		for (int i = 0; i < heap.length; i++){
+			// if the current node has a 0 emergency status, just stop
+			if (heap[i].getEmergencyStatus().getStatusCode() == 0){
+				break;
+			} else {
+				temp.add(heap[i]);
+			}
+		}
+
+		return temp;
+	}
+
 	/**
 	 * TODO: swap(i,j) function/
 	 * TODO: calculate key function
