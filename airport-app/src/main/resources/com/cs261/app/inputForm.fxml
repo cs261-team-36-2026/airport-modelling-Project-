@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -18,7 +19,7 @@
          <children>
             <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: #4b4846; -fx-border-width: 10; -fx-padding: 10; -fx-effect: dropshadow(gaussian, #4B4846, 15, 0, 0, 5);">
                <content>
-                  <VBox prefHeight="200.0" prefWidth="100.0" fx:id="runwayBox">
+                  <VBox fx:id="runwayBox" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <HBox prefHeight="20.0" prefWidth="200.0">
                            <children>
@@ -135,16 +136,17 @@
                                        </font>
                                     </Label>
                                     <ComboBox fx:id="statusBox" prefWidth="150.0" />
-                                    <Button mnemonicParsing="false" text="Remove This Runway">
-                                       <HBox.margin>
-                                          <Insets left="130.0" />
-                                       </HBox.margin>
-                                    </Button>
                                  </children>
                               </HBox>
                            </children>
                         </VBox>
-                        <Button mnemonicParsing="false" onAction="#addSection" text="Add Runway" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#addSection" text="Add Runway" />
+                              <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                              <Button mnemonicParsing="false" onAction="#removeSection" text="Remove This runway" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </content>
