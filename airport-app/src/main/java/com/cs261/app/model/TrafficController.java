@@ -1,5 +1,7 @@
 package com.cs261.app.model;
 
+import java.util.ArrayList;
+
 import com.cs261.app.model.RunWay.OperatingMode;
 
 
@@ -53,7 +55,24 @@ public class TrafficController {
 
 		// updating other runways 
 		// first get a list of unavailable runways of each type
+		ArrayList<RunWay> busyArrivals = runways.getBusyRunway(OperatingMode.LANDING);
+		ArrayList<RunWay> busyDepart = runways.getBusyRunway(OperatingMode.TAKEOFF);
 
+		// planes that have finished their time in the simulation
+		ArrayList<String> exitedPlanes = new ArrayList<>();
+
+		for (RunWay r : busyArrivals) {
+			String p = r.updateTime();
+			if (r != null){
+				exitedPlanes.add(p);
+			}
+		}
+		for (RunWay r : busyDepart) {
+			String p = r.updateTime();
+			if (r != null){
+				exitedPlanes.add(p);
+			}
+		}
 	}
 	
 	

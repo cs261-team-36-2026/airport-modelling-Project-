@@ -102,11 +102,13 @@ public class RunWay {
 	/**
 	 * TODO: add error checking on this
 	 * remove plane
-	 * @return
+	 * @return plane removed
 	 */
-	public void removePlane(){
+	public String removePlane(){
+		String temp = this.currentPlane;
 		this.currentPlane = null;
 		this.status = OperationStatus.AVAILABLE;
+		return temp;
 	}
 
 
@@ -168,29 +170,26 @@ public class RunWay {
 	/**
 	 * increment time spent by tick mins
 	 * @return true if it has been able to increase it, false if no increase because the time has elapsed
+	 * @return plane removed
 	 */
-	public boolean updateTime(){
-		if (timeSpent >= Constants.runwayTime){
-			resetTimeSpent();
-			return false;
-		} else if (!hasPlane()){
-			resetTimeSpent();
-			return false;
-		} 
+	public String updateTime(){
+		if (timeSpent >= Constants.runwayTime || !hasPlane()){ // need to return the plane removed 
+			return resetTimeSpent();
+		}
 		else {
 			timeSpent += Constants.timeInc;
-			return true;
+			return null;
 		}
 	}
 	/**
 	 * TODO: add error checking for this
 	 * reset time spent to 0 and make plane exit the simulation
 	 * @return true if it has been able to reset it false otherwise
+	 * @return current plane removed if it is
 	 */
-	public boolean resetTimeSpent(){
+	public String resetTimeSpent(){
 		this.timeSpent = 0;
-		removePlane();
-		return true;
+		return removePlane();
 	}
 
 	/**
