@@ -1,10 +1,12 @@
 package com.cs261.app.model;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class TakeOffQueue {
     /** 
      * is there anything else we want the queue to do? TODO max takeoff queue length
      * test, calculate metrics here?
+     * TODO return list of plane ids in order?
      */
 
     private LinkedList<AirCraft> queue;
@@ -42,5 +44,25 @@ public class TakeOffQueue {
         return queue.size();
     }
 
+//}
+
+public static void main(String[] args) {
+
+    TakeOffQueue myTakeoff = new TakeOffQueue();
+    AirCraft plane = new AirCraft(AirCraft.FlightType.ARRIVAL, "PO111", "Delta", "JFK", "LAX", LocalDateTime.of(2026, 2, 19, 14, 30), LocalDateTime.of(2026, 2, 19, 14, 35), 450, 8000, 30000, AirCraft.EmergencyStatus.NONE);
+    AirCraft plane2 = new AirCraft(AirCraft.FlightType.ARRIVAL, "PT222", "Pelta", "PFK", "PAX", LocalDateTime.of(2026, 1, 9, 17, 30), LocalDateTime.of(2026, 1, 9, 17, 35), 400, 8500, 35000, AirCraft.EmergencyStatus.NONE);
+    AirCraft plane3 = new AirCraft(AirCraft.FlightType.ARRIVAL, "PT333", "Pelta", "PFK", "PAX", LocalDateTime.of(2026, 1, 9, 17, 30), LocalDateTime.of(2026, 1, 9, 17, 35), 400, 8500, 35000, AirCraft.EmergencyStatus.NONE);
+    AirCraft plane4 = new AirCraft(AirCraft.FlightType.ARRIVAL, "PF444", "Pelta", "PFK", "PAX", LocalDateTime.of(2026, 1, 9, 17, 30), LocalDateTime.of(2026, 1, 9, 17, 35), 400, 8500, 35000, AirCraft.EmergencyStatus.NONE);
+
+    myTakeoff.enqueue(plane2);
+    myTakeoff.enqueue(plane);
+    myTakeoff.enqueue(plane3);
+    myTakeoff.enqueue(plane4);
+    System.out.println(myTakeoff.size());
+    System.out.println(myTakeoff.getAircraftAt(0).getCallSign());
+    myTakeoff.dequeue();
+    System.out.println(myTakeoff.getAircraftAt(0).getCallSign());
+    System.out.println(myTakeoff.isEmpty());
 }
 
+}
