@@ -5,4 +5,3 @@ public class Constants {
     public static final float fuelBurn = 2.70f;
 	public static final int runwayTime = 6;
 }
-

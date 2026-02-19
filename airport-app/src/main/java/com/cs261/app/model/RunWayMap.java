@@ -1,5 +1,7 @@
 package com.cs261.app.model;
 
+import java.util.ArrayList;
+
 import com.cs261.app.model.RunWay.OperatingMode;
 import com.cs261.app.model.RunWay.OperationStatus;
 
@@ -43,4 +45,16 @@ public class RunWayMap {
 		return null;
 	}
 	
+	
+	// list of unavailable runways or an update method on them
+
+	public ArrayList<RunWay> getBusyRunway(OperatingMode mode){
+		ArrayList<RunWay> list = new ArrayList<>();
+		for (int i = 0; i < runways.length; i++){
+			if (runways[i].getMixedModeTurn() == mode && runways[i].getStatus() == OperationStatus.UNAVAIL){
+				list.add(runways[i]);
+			}
+		}
+		return list;
+	}
 }

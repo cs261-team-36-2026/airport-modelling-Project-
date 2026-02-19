@@ -61,19 +61,58 @@ public class NewSim
     @FXML
     private void addSection() 
     {
-
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/cs261/app/RunwayInput.fxml")
-            );
-
-            VBox newSection = loader.load();
-            runwayBox.getChildren().add(newSection);
-
-        } 
-        catch (IOException e) 
+        if (runways < 10) 
         {
-            e.printStackTrace();
+            runways++;
+            try 
+            {
+                FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/cs261/app/RunwayInput.fxml")
+                );
+
+                VBox newSection = loader.load();
+
+
+                // 🔥 Get the controller
+                RunwayInputController controller = loader.getController();
+
+                // 🔥 Modify something inside the FXML
+                controller.setRunwayTitle("Runway " + runways);
+
+                int size = runwayBox.getChildren().size();
+
+                if (size >= 1) 
+                {
+                    runwayBox.getChildren().add(size - 1, newSection);
+                } 
+                else 
+                {
+                    runwayBox.getChildren().add(newSection);
+                }
+
+            } 
+
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+             
+        }
+       
+    }
+
+    @FXML
+    private void removeSection() 
+    {
+        if (runways > 1) 
+        {
+            runways--;
+            int size = runwayBox.getChildren().size();
+            runwayBox.getChildren().remove(size - 2);
         }
     }
+
+
+
+
+
 }

@@ -1,5 +1,10 @@
 package com.cs261.app.model;
 
+import java.util.ArrayList;
+
+import com.cs261.app.model.RunWay.OperatingMode;
+
+
 public class TrafficController {
 	// TODO: add all data structures/
 	// TODO: constructor
@@ -30,6 +35,44 @@ public class TrafficController {
 		// check diversions
 		// convert runway
 		// 
+
+
+		// moving planes into runways
+		RunWay arrivalRunway = runways.getRunway(OperatingMode.LANDING);
+		RunWay departRunway = runways.getRunway(OperatingMode.TAKEOFF);
+
+		if (arrivalRunway != null){
+			AirCraft nextLand = holdingPattern.dequeue();
+			arrivalRunway.addPlane(nextLand.getCallSign());
+			nextLand.addToRunway(arrivalRunway.getRunwayNumber());
+		}
+
+		if (departRunway != null){
+			// get next plane in takeoff queue
+			// do add plane
+			// do add to runway
+		}
+
+		// updating other runways 
+		// first get a list of unavailable runways of each type
+		ArrayList<RunWay> busyArrivals = runways.getBusyRunway(OperatingMode.LANDING);
+		ArrayList<RunWay> busyDepart = runways.getBusyRunway(OperatingMode.TAKEOFF);
+
+		// planes that have finished their time in the simulation
+		ArrayList<String> exitedPlanes = new ArrayList<>();
+
+		for (RunWay r : busyArrivals) {
+			String p = r.updateTime();
+			if (r != null){
+				exitedPlanes.add(p);
+			}
+		}
+		for (RunWay r : busyDepart) {
+			String p = r.updateTime();
+			if (r != null){
+				exitedPlanes.add(p);
+			}
+		}
 	}
 	
 	
