@@ -3,6 +3,7 @@ package com.cs261.app.model;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import com.cs261.app.model.AirCraft.ZoneStatus;
 import com.cs261.app.model.RunWay.OperatingMode;
 
 
@@ -36,15 +37,9 @@ public class TrafficController {
 		// check diversions/
 		// convert runway
 
-		// moving planes into runways
-		RunWay arrivalRunway = runways.getRunway(OperatingMode.LANDING);
-		RunWay departRunway = runways.getRunway(OperatingMode.TAKEOFF);
-
-
 		/**
 		 * HANDLING SIMULATION CASES OF AIRCRAFT THAT ARE ARRIVING 
 		 */
-		if (arrivalRunway != null){
 			/**
 			 * Cases:
 			 * 1. runway available, no queue HANDLEDD
@@ -63,26 +58,41 @@ public class TrafficController {
 			 * 		and return ones that need to be diverted
 			 * 		and traffic controller will divert them 
 			 */
-			AirCraft nextLand = holdingPattern.dequeue();
-			arrivalRunway.addPlane(nextLand);
-			nextLand.setExitTime(Constants.convertTicksToDate(currentTime));
-			// does this in addPlane nextLand.addToRunway(arrivalRunway.getRunwayNumber());
-		} else {
+
+		ArrayList<RunWay> freeArrivals = runways.getFreeArrive();
+		ArrayList<RunWay> freeDepart = runways.getFreeDepart();
+
+		if (freeArrivals.isEmpty()){
 			if (holdingPattern.top().getEmergencyStatus() != AirCraft.EmergencyStatus.NONE){
 				// if it is in emergency
 				RunWay mixedAvail = runways.getMixedRunWay(); 
 				if (mixedAvail != null){ // land because theres one available
 					AirCraft nextLand = holdingPattern.dequeue();
 					mixedAvail.addPlane(nextLand);
+					if (mixedAvail.getMixedModeTurn() == OperatingMode.LANDING){
+						runways.swapFreeRunway(mixedAvail, OperatingMode.LANDING);
+					} else {
+						runways.swapFreeRunway(mixedAvail, OperatingMode.TAKEOFF);
+					}
 					nextLand.setExitTime(Constants.convertTicksToDate(currentTime));
 				} //else , we cant do anything apart from check what needs to be diverted
 			}
+		} else {
+			while (!freeArrivals.isEmpty()){
+				RunWay avail = freeArrivals.get(0);
+				AirCraft nextLand = holdingPattern.dequeue();
+				avail.addPlane(nextLand);
+				runways.swapFreeRunway(avail, OperatingMode.LANDING);
+				nextLand.setExitTime(Constants.convertTicksToDate(currentTime));
+			}
 		}
+
+
 
 		ArrayList<AirCraft> emergencies = holdingPattern.getEmergencyPlanes();
 
 		for (AirCraft a : emergencies){
-			if (currentTime - a.getEmergencyTime() >= Constants.timeInc * 2){
+			if ((currentTime - a.getEmergencyTime()) >= Constants.timeInc * 2){
 				// divert
 				a.setExitTime(Constants.convertTicksToDate(currentTime));
 				a.setZoneStatus(AirCraft.ZoneStatus.DIVERT);
@@ -98,12 +108,6 @@ public class TrafficController {
 		/**
 		 * TODO: HANDLING SIMULATION CASES OF AIRCRAFT THAT ARE DEPARTING
 		 */
-		if (departRunway != null){
-			// get next plane in takeoff queue
-			// do add plane
-			// do add to runway
-		}
-
 
 
 		// updating other runways 
@@ -121,19 +125,21 @@ public class TrafficController {
 
 		ArrayList<String> exitedPlanes = new ArrayList<>();
 		//  TODO: need to update the exit times for these planes and their zones !!!
-		for (RunWay r : busyArrivals) {
-			String p = r.updateTime();
-			if (r != null){
-				exitedPlanes.add(p);
-			}
-		}
-		for (RunWay r : busyDepart) {
-			String p = r.updateTime();
-			if (r != null){
-				exitedPlanes.add(p);
+		checkBusyRunways(busyArrivals, exitedPlanes, currentTime, OperatingMode.LANDING);
+		checkBusyRunways(busyDepart, exitedPlanes, currentTime, OperatingMode.TAKEOFF);
+	}
+	
+	private void checkBusyRunways(ArrayList<RunWay> runwayList, ArrayList<String> exits, int t, OperatingMode mode){
+		AirCraft curr = null;
+		for (RunWay r : runwayList) {
+			curr = aircraftMap.get(r.getCurrentPlane());
+			if ((t - Constants.convertDateToTicks(curr.getExitTime())) >= Constants.runwayTime){ // its finished
+				r.removePlane();
+				curr.setZoneStatus(ZoneStatus.EXIT);
+				runways.swapBusyRunway(r, mode);
+				exits.add(curr.getCallSign());
 			}
 		}
 	}
-	
 	
 }

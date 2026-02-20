@@ -113,4 +113,31 @@ public class RunWayMap {
 		return list;
 	}
 
+	/**
+	 * swap from unavailable to available
+	 * @param r
+	 */
+	public void swapBusyRunway(RunWay r, OperatingMode mode){
+		if (mode == OperatingMode.LANDING){
+			busyArrive.remove(r);
+			freeArrive.add(r);
+		} else { // takeoff
+			busyDepart.remove(r);
+			freeDepart.add(r);
+		}
+	}
+
+	/**
+	 * swap from available to unavailable
+	 */
+	public void swapFreeRunway(RunWay r, OperatingMode mode){
+		if (mode == OperatingMode.LANDING){
+			freeArrive.remove(r);
+			busyArrive.add(r);
+		} else {
+			freeDepart.remove(r);
+			busyDepart.add(r);
+		}
+	}
+
 }
