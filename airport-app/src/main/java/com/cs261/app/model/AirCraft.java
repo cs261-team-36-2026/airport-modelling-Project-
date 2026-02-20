@@ -203,14 +203,14 @@ public class AirCraft {
      * @param t fuel decrease in t minutes
      */
     public void updateFuel(int t){
-        this.fuel = this.fuel - (((this.speed * 1.852) * (t/60) * Constants.fuelBurn) / 0.8029);
+        this.fuel = this.fuel - (((this.speed * 1.852) * (t/60) * Utils.fuelBurn) / 0.8029);
     }
     
     /**
      * @return the number of hours of fuel remaining 
      */
     public double fuelRemainingHrs(){
-    	double hrs = ((this.fuel * 0.8029) / Constants.fuelBurn) * (1 / this.speed);
+    	double hrs = ((this.fuel * 0.8029) / Utils.fuelBurn) * (1 / this.speed);
 		return hrs;
     }
     
@@ -238,7 +238,7 @@ public class AirCraft {
      * @return true if there is a fuel emergency, false otherwise.
      */
     public boolean updateHoldingFlight() {
-		updateFuel(2);
+		updateFuel(Utils.timeInc);
 		updateAltitude();
 		return updateFuelEmergency(); 
     }

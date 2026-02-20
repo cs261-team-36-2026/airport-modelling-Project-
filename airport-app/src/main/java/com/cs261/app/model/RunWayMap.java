@@ -95,8 +95,9 @@ public class RunWayMap {
 		return runways.length;
 	}
 	/**
-	 * swap from unavailable to available
-	 * @param r
+	 * Make the specified runway switch from busy to free (ie removing airplane from it)
+	 * @param r to be switched
+	 * @param mode mode of the runway
 	 */
 	public void swapBusyRunway(RunWay r, OperatingMode mode){
 		if (mode == OperatingMode.LANDING){

@@ -74,7 +74,7 @@ public class TrafficController {
 					} else {
 						runways.swapFreeRunway(mixedAvail, OperatingMode.TAKEOFF);
 					}
-					nextLand.setExitTime(Constants.convertTicksToDate(currentTime));
+					nextLand.setExitTime(Utils.convertTicksToDate(currentTime));
 				} //else , we cant do anything apart from check what needs to be diverted
 			}
 		} else {
@@ -83,7 +83,7 @@ public class TrafficController {
 				AirCraft nextLand = holdingPattern.dequeue();
 				avail.addPlane(nextLand);
 				runways.swapFreeRunway(avail, OperatingMode.LANDING);
-				nextLand.setExitTime(Constants.convertTicksToDate(currentTime));
+				nextLand.setExitTime(Utils.convertTicksToDate(currentTime));
 			}
 		}
 
@@ -92,28 +92,17 @@ public class TrafficController {
 		ArrayList<AirCraft> emergencies = holdingPattern.getEmergencyPlanes();
 
 		for (AirCraft a : emergencies){
-			if ((currentTime - a.getEmergencyTime()) >= Constants.timeInc * 2){
+			if ((currentTime - a.getEmergencyTime()) >= Utils.timeInc * 2){
 				// divert
-				a.setExitTime(Constants.convertTicksToDate(currentTime));
+				a.setExitTime(Utils.convertTicksToDate(currentTime));
 				a.setZoneStatus(AirCraft.ZoneStatus.DIVERT);
 			}
 		}
 
-
-		/**
-		 * FIX: instead of having a time update function in runways, just keep track of the difference in time
-		 * because exit time is the time it enters the runway 
-		 */
-
-		/**
-		 * TODO: HANDLING SIMULATION CASES OF AIRCRAFT THAT ARE DEPARTING
-		 */
-
-
 		// updating other runways 
 		// first get a list of unavailable runways of each type
-		ArrayList<RunWay> busyArrivals = runways.getBusyRunway(OperatingMode.LANDING);
-		ArrayList<RunWay> busyDepart = runways.getBusyRunway(OperatingMode.TAKEOFF);
+		ArrayList<RunWay> busyArrivals = runways.getBusyArrive();
+		ArrayList<RunWay> busyDepart = runways.getBusyDepart();
 
 		// planes that have finished their time in the simulation
 
@@ -133,7 +122,7 @@ public class TrafficController {
 		AirCraft curr = null;
 		for (RunWay r : runwayList) {
 			curr = aircraftMap.get(r.getCurrentPlane());
-			if ((t - Constants.convertDateToTicks(curr.getExitTime())) >= Constants.runwayTime){ // its finished
+			if ((t - Utils.convertDateToTicks(curr.getExitTime())) >= Utils.runwayTime){ // its finished
 				r.removePlane();
 				curr.setZoneStatus(ZoneStatus.EXIT);
 				runways.swapBusyRunway(r, mode);
