@@ -1,8 +1,6 @@
 package com.cs261.app.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
 import com.cs261.app.model.AirCraft.ZoneStatus;
 import com.cs261.app.model.RunWay.OperatingMode;
 
@@ -57,6 +55,7 @@ public class TrafficController {
 			 * 		holding queue needs to check for all emergency aircraft
 			 * 		and return ones that need to be diverted
 			 * 		and traffic controller will divert them 
+			 * 7. converting 
 			 */
 
 		ArrayList<RunWay> freeArrivals = runways.getFreeArrive();

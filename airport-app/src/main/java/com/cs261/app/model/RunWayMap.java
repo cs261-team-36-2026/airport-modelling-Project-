@@ -48,7 +48,7 @@ public class RunWayMap {
 	 */
 	public RunWay getRunway(String number) {
 		for (int i = 0; i < runways.length; i++) {
-			if (runways[i].getRunwayNumber() == number) return runways[i];
+			if (runways[i].getRunwayNumber().equals(number)) return runways[i];
 		}
 		return null;
 	}

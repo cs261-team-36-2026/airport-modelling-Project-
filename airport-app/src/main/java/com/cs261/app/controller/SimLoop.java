@@ -30,16 +30,16 @@ public class SimLoop extends Task<IModelOutput>{
 	
 	// TODO: add data gen and departure model
 	
-	public SimLoop(RunWay[] userRunways, int userRuntime) {
+	public SimLoop(RunWay[] userRunways, int userRuntime){
 		this.runways = new RunWayMap(userRunways);
 		this.runtime = userRuntime;
 		this.currentTime = 0;
 		this.prevTime = 0;
 		this.aircraftMap = new AirCraftMap();
 		this.holdingPattern = new HoldingQueue(500);
-		// take off queue,datagen, departure model
+		// TODO: take off queue,datagen, departure model
 		this.arrivalModel = new ArrivalModel(aircraftMap, holdingPattern);
-		this.trafficModel = new TrafficController(this.aircraftMap, this.runways, this.holdingPattern, this.takeOffQueue);
+		this.trafficModel = new TrafficController(aircraftMap, runways, holdingPattern, takeOffQueue);
 		this.dataGen = new DataGen(userRuntime, 15, 15); // init with runtime and default flow rate per hour.
 	}
 	

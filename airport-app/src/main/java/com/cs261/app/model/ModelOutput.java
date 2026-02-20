@@ -6,6 +6,18 @@ public class ModelOutput implements IModelOutput {
     private DepartureModel departureModel;
     private ArrivalModel arrivalModel;
     private RunWayMap runways;
+    // aircraft map
+
+    /**
+     * Method called in simloop at the end of the iteration
+     * 
+     * @param currentTime number of ticks
+     */
+    public void updateOutput(){
+        
+    }
+
+
 
     public ModelOutput(DepartureModel departureModel, ArrivalModel arrivalModel, RunWayMap runways) {
         this.departureModel = departureModel;

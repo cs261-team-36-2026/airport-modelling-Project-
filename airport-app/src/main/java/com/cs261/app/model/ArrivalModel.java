@@ -6,14 +6,20 @@ public class ArrivalModel {
 	private AirCraftMap aircraftMap;
 	private HoldingQueue holdingPattern;
 	private IModelOutput output = null;
-	
+	private int totalArrivals;
+
+
 	public ArrivalModel(AirCraftMap map, HoldingQueue queue) {
 		this.aircraftMap = map;
 		this.holdingPattern = queue;
+		totalArrivals = 0;
 	}
 	
 	public void updateArrivals(AirCraft newPlane, int currentTime, int prevTime) {
-		holdingPattern.enqueue(newPlane);
+		
+		// increment the number of planes that have arrived ever
+		// increment the number of planes that have been in the holding queue 
+
 		holdingPattern.updateHolding();
 	}
 
