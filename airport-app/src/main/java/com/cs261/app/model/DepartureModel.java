@@ -21,6 +21,7 @@ public class DepartureModel {
 	}
 
 	public void planeTakesOff(AirCraft newPlane, int currentTime, int prevTime) {
+		// TODO add to AirCraftMap?
 		takeoffQueue.dequeue();
 	}
 
