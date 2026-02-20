@@ -1,5 +1,7 @@
 package com.cs261.app.model;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class ArrivalModel {
@@ -15,16 +17,20 @@ public class ArrivalModel {
 		totalArrivals = 0;
 	}
 	
-	public void updateArrivals(AirCraft newPlane, int currentTime, int prevTime) {
+	public void updateArrivals(List<AirCraft> newPlanes, int currentTime) {
 		
 		/**
-		 * TODO: need to think about what to set emergency time as when it enters the sim as health/mech ie how to pass in current time
+		 * TODO: (Rhys) need to think about what to set emergency time as when it enters the sim as health/mech ie how to pass in current time
 		 * TODO: need to add stuff for output
 		*/
-
-		// increment the number of planes that have arrived ever
-		// increment the number of planes that have been in the holding queue 
-
+		
+		// add new planes 
+		totalArrivals += newPlanes.size();
+		Iterator<AirCraft> i = newPlanes.listIterator();
+		while (i.hasNext()){
+			holdingPattern.enqueue(i.next());	
+		}
+		i = null;
 		holdingPattern.updateHolding(currentTime);
 	}
 

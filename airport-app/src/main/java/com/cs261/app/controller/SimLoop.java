@@ -14,7 +14,7 @@ import com.cs261.app.model.RunWay;
 import com.cs261.app.model.DataGen;
 
 import javafx.concurrent.Task;
-
+import java.util.List;
 
 public class SimLoop extends Task<IModelOutput>{
 	private AirCraftMap aircraftMap;
@@ -48,10 +48,13 @@ public class SimLoop extends Task<IModelOutput>{
 		// TODO Auto-generated method stub
 		while (currentTime != runtime) {
 			// get flights for this tick
+			List<AirCraft> newArrivals = dataGen.getArrivalsForTick(currentTime, currentTime+Utils.timeInc);
+			List<AirCraft> newDepartures = dataGen.getDeparturesForTick(currentTime, currentTime+Utils.timeInc);
+
 
 			// traffic controller update
 			// arrivals update
-			arrivalModel.updateArrivals(null, currentTime, prevTime);
+			arrivalModel.updateArrivals(null, currentTime);
 			// departures update
 			currentTime += Utils.timeInc;
 		}

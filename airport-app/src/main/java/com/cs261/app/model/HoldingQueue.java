@@ -7,35 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class HoldingQueue {
-	/** XXX: basically i realised you dont need a queue at all to check the priority you just need to check the emergency
-	 * status. TEST THIS !!!
-	 * 
-	 * 
-	 * 
-	 * Each heap entry is a nested class object. This is because the key of the airplane in the holding queue is not
-	 * related to the airplane object basic information. 
-	 */
-		//	protected class HoldingEntry {
-		//		private int key;
-		//		private AirCraft plane;
-		//		
-		//		protected HoldingEntry(AirCraft plane) {
-		//			this.plane = plane;
-		//		}
-		//		
-		//		protected void setKey(int k) {
-		//			this.key = k;
-		//		}
-		//		
-		//		protected int getKey() {
-		//			return this.key;
-		//		}
-		//		
-		//		protected AirCraft getPlane() {
-		//			return this.plane;
-		//		}
-		//	}
-	
 	AirCraft[] heap; // internally an array
 	int size;
 	int max;
@@ -232,24 +203,13 @@ public class HoldingQueue {
 	}
 
 	/**
-	 * Gets all of the plane ids in the holding pattern right now 
+	 * @return hashset of all of the plane ids in the holding pattern right now 
 	 */
-
 	public Set<String> getAircraftIds(){
-		// TODO check this works
 		Set<String> ids = new HashSet<>();
 		for (int i = 0; i < heap.length; i++){
 				ids.add(heap[i].getCallSign());
 		}
 		return ids;
-	}
-
-	/**
-	 * TODO: swap(i,j) function/
-	 * TODO: calculate key function
-	 * TODO: getLeft, getRight, etc function/
-	 * TODO: resize/, add, remove, etc
-	 * TODO: upheap (Adding)/, downheap (Removals)/
-	 */
-	
+	}	
 }

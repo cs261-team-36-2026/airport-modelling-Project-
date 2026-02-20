@@ -198,10 +198,6 @@ public class AirCraft {
 		return emergencyTimeAt;
 	}
 
-	// update: fuel, altitude (idk yet for that), emergency according to FUEL
-	// setting: exit time, zone status
-	// stays constant: callsign, operator, origin, dest, entry time, flighttype, speed
-	
 	/**
      * Decrease fuel by constant amount according to time t
      * @param t fuel decrease in t minutes
