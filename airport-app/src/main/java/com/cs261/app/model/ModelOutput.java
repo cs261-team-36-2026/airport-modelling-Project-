@@ -3,15 +3,24 @@ import java.util.*;
 
 // collates data that must be outputted to view
 public class ModelOutput implements IModelOutput {
-    
+    private DepartureModel departureModel;
+    private ArrivalModel arrivalModel;
+
+    public ModelOutput(DepartureModel departureModel, ArrivalModel arrivalModel) {
+        this.departureModel = departureModel;
+        this.arrivalModel = arrivalModel;
+    }
+
     // Queue
     @Override
     public List<String> getHoldingQueueOrder() {
+        /* what does this do? seems similar to getHoldingAircraftds, except has order; is there a point in having both? */
         return Collections.emptyList();
     }
 
     @Override
     public List<String> getTakeOffQueueOrder() {
+        /* what does this do? seems similar to getTakeoffAircraftds */
         return Collections.emptyList();
     }
 
@@ -36,12 +45,12 @@ public class ModelOutput implements IModelOutput {
     // Aircraft
     @Override
     public Set<String> getHoldingAircraftIds() {
-        return Collections.emptySet();
+        return arrivalModel.getHoldingPatternAircraftIds();
     }
 
     @Override
     public Set<String> getTakeOffAircraftIds() {
-        return Collections.emptySet();
+        return departureModel.getTakeOffQueueAircraftIds();
     }
 
     @Override

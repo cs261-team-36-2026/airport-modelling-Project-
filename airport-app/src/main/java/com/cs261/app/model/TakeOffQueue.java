@@ -1,12 +1,15 @@
 package com.cs261.app.model;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class TakeOffQueue {
     /** 
      * is there anything else we want the queue to do? TODO max takeoff queue length
      * test, calculate metrics here?
      * TODO return list of plane ids in order?
+     * TODO test getAircraftIds
      */
 
     private LinkedList<AirCraft> queue;
@@ -44,6 +47,14 @@ public class TakeOffQueue {
         return queue.size();
     }
 
+    // returns a set of the aircraft ids in the takeoff queue
+    public Set<String> getAircraftIds() {
+        Set<String> ids = new HashSet<>();
+        for (AirCraft plane : queue) {
+            ids.add(plane.getCallSign());
+        }
+        return ids;
+    }
 //}
 
 public static void main(String[] args) {

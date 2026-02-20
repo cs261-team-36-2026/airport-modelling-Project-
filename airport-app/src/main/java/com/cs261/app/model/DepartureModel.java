@@ -1,6 +1,9 @@
 package com.cs261.app.model;
 
+import java.util.Set;
+
 // TODO need to add where time enter queue stored
+// TODO test getTakeoffQueueAircraftIds
 
 public class DepartureModel {
 	private AirCraftMap aircraftMap;
@@ -24,5 +27,8 @@ public class DepartureModel {
 		// TODO add to AirCraftMap?
 		takeoffQueue.dequeue();
 	}
-
+	
+	public Set<String> getTakeOffQueueAircraftIds() {
+		return takeoffQueue.getAircraftIds();
+	}
 }

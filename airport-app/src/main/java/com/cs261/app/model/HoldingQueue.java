@@ -3,6 +3,8 @@ package com.cs261.app.model;
 import java.util.ArrayList;
 
 import com.cs261.app.model.AirCraft.FlightType;
+import java.util.HashSet;
+import java.util.Set;
 
 public class HoldingQueue {
 	/** XXX: basically i realised you dont need a queue at all to check the priority you just need to check the emergency
@@ -226,6 +228,19 @@ public class HoldingQueue {
 		}
 
 		return temp;
+	}
+
+	/**
+	 * Gets all of the plane ids in the holding pattern right now 
+	 */
+
+	public Set<String> getAircraftIds(){
+		// TODO check this works
+		Set<String> ids = new HashSet<>();
+		for (int i = 0; i < heap.length; i++){
+				ids.add(heap[i].getCallSign());
+		}
+		return ids;
 	}
 
 	/**
