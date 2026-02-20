@@ -88,19 +88,12 @@ public class RunWayMap {
 		}
 		return null;
 	}
-
-	// list of unavailable runways or an update method on them
-
-	public ArrayList<RunWay> getBusyRunway(OperatingMode mode){
-		ArrayList<RunWay> list = new ArrayList<>();
-		for (int i = 0; i < runways.length; i++){
-			if (runways[i].getMixedModeTurn() == mode && runways[i].getStatus() == OperationStatus.UNAVAIL){
-				list.add(runways[i]);
-			}
-		}
-		return list;
+	/**
+	 * @return number of runways 
+	 */
+	public int size(){
+		return runways.length;
 	}
-
 	/**
 	 * swap from unavailable to available
 	 * @param r
