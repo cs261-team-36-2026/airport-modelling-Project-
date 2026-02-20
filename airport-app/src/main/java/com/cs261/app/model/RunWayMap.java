@@ -77,18 +77,6 @@ public class RunWayMap {
 		return busyDepart;
 	}
 	/**
-	 * Get first available runway of a specific type 
-	 * @param mode type of runway needed
-	 * @return runway of that type or mixed runway that  is available, or null if no runway is available 
-	 */
-	public RunWay getRunway(OperatingMode mode) {
-		for (int i = 0; i < runways.length; i++) {
-			if (runways[i].getMixedModeTurn() == mode && runways[i].getStatus() == OperationStatus.AVAILABLE) return runways[i]; 
-		}
-		return null;
-	}
-	
-	/**
 	 * Retrieve an available mixed runway regardless of its turn
 	 * @return
 	 */
