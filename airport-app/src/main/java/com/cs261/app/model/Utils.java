@@ -7,6 +7,7 @@ public class Utils {
 	public static final int timeInc = 2;
     public static final float fuelBurn = 2.70f;
 	public static final int runwayTime = 6;
+	public static final int emergencyTime = 4; //maximum emergency wait time
 
 	/**
 	 * Convert from ticks to LocalDateTime

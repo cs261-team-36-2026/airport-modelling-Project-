@@ -30,94 +30,90 @@ public class TrafficController {
 	}
 
 	public void updateTraffic(int currentTime, int prevTime) {
-		// get stuff out of holding queue/
-		// get stuff out of take off queue
-		// check diversions/
-		// convert runway
+		ArrayList<RunWay> freeArrivals = runways.getFreeArrive(); // all available arrival runways (inc. mixed mode on arrival turn)
+		ArrayList<RunWay> freeDepart = runways.getFreeDepart(); // all available departure runways (inc. mixed mode runways on departure turn)
+
+		ArrayList<String> exitedPlanes = new ArrayList<>(); // list of all planes that exit their queues (take off or holding) in this iteration of the simulation
+
+		handleArrivals(freeArrivals, exitedPlanes, currentTime);
+		handleDiversions(currentTime);
 
 		/**
-		 * HANDLING SIMULATION CASES OF AIRCRAFT THAT ARE ARRIVING 
+		 * Check if the planes currently occupying each unavailable runway has finished its time on the runway 
+		 * so the runway can be made free
 		 */
-			/**
-			 * Cases:
-			 * 1. runway available, no queue HANDLEDD
-			 * 2. runway available, first in queue, no emergency HANDLED
-			 * 3. runway available, first in queue, emergency HANDLED
-			 * 		handled because it will be dequeued and put in the available runway
-			 * 4. no runway, first is queue, no emergency HANDLED
-			 * 		handled because arrival runway returned as null
-			 * 5. no runway, first in queue, emergency
-			 * 		need to find a mixed runway REGARDLESS OF MODE 
-			 * 		need to store an 'emergency time' ie the point at which it went into emergency mode
-			 * 		need to override mixed runway mode and add it to the runway, and carry onto mixed runway turn
-			 * 		otherwise if no available mixed runway dnt dequeue anything and check its time 
-			 * 6. no runway, not first in queue, emergency 
-			 * 		holding queue needs to check for all emergency aircraft
-			 * 		and return ones that need to be diverted
-			 * 		and traffic controller will divert them 
-			 * 7. converting 
-			 */
+		ArrayList<RunWay> busyArrivals = runways.getBusyArrive(); // list of all arrival runways that are occupied currently
+		ArrayList<RunWay> busyDepart = runways.getBusyDepart(); // list of all departure runways that are occupied currently
+		checkBusyRunways(busyArrivals, currentTime, OperatingMode.LANDING);
+		checkBusyRunways(busyDepart, currentTime, OperatingMode.TAKEOFF);
+	}
 
-		ArrayList<RunWay> freeArrivals = runways.getFreeArrive();
-		ArrayList<RunWay> freeDepart = runways.getFreeDepart();
+	/**
+	 * Handles arrivals and holding queue according to the runway availability
+	 * Dequeue holding queue per available arrival runway.
+	 * If no arrival runways are available and the front of the queue is an emergency aircraft, find a mixed runway which is available.
+	 * @param freeArrivals list of available arrival runways
+	 * @param exitedPlanes list of planes that have exited the simulation (because they have been assigned to a runway)
+	 * @param currentTime number of ticks elapsed so far
+	 */
+	private void handleArrivals(ArrayList<RunWay> freeArrivals, ArrayList<String> exitedPlanes, int currentTime){
+		if (freeArrivals.isEmpty()){ 
+			if (holdingPattern.top().getEmergencyStatus() != AirCraft.EmergencyStatus.NONE){ // first plane in the holding pattern has an emergency
+				RunWay mixed = runways.getMixedRunWay(); // check if a mixed runway is available regardless of turn
+				if (mixed != null){ 
+					AirCraft front = holdingPattern.dequeue(); // airplane exits holding pattern
+					mixed.addPlane(front);
 
-		if (freeArrivals.isEmpty()){
-			if (holdingPattern.top().getEmergencyStatus() != AirCraft.EmergencyStatus.NONE){
-				// if it is in emergency
-				RunWay mixedAvail = runways.getMixedRunWay(); 
-				if (mixedAvail != null){ // land because theres one available
-					AirCraft nextLand = holdingPattern.dequeue();
-					mixedAvail.addPlane(nextLand);
-					if (mixedAvail.getMixedModeTurn() == OperatingMode.LANDING){
-						runways.swapFreeRunway(mixedAvail, OperatingMode.LANDING);
+					/** check what list the runway is on, and swap it to being unavailable. it remains on the list corresponding to the last turn. 
+					 * i.e. if it was on the available departure runway list, it will swap to the unavailable departure runway list, even though it is handling an arrival
+					 */ 
+					if (mixed.getMixedModeTurn() == OperatingMode.LANDING){
+						runways.swapFreeRunway(mixed, OperatingMode.LANDING); 
 					} else {
-						runways.swapFreeRunway(mixedAvail, OperatingMode.TAKEOFF);
+						runways.swapFreeRunway(mixed, OperatingMode.TAKEOFF);
 					}
-					nextLand.setExitTime(Utils.convertTicksToDate(currentTime));
-				} //else , we cant do anything apart from check what needs to be diverted
+					front.setExitTime(Utils.convertTicksToDate(currentTime));
+					exitedPlanes.add(front.getCallSign());
+				} 
 			}
 		} else {
+			/** for each available arrival runway, dequeue the holding queue.
+			 * Planes do not have to wait more if there are runways immediately available. 
+			 */
 			while (!freeArrivals.isEmpty()){
-				RunWay avail = freeArrivals.get(0);
-				AirCraft nextLand = holdingPattern.dequeue();
-				avail.addPlane(nextLand);
-				runways.swapFreeRunway(avail, OperatingMode.LANDING);
-				nextLand.setExitTime(Utils.convertTicksToDate(currentTime));
+				RunWay landing = freeArrivals.get(0); // always pick from front of the list
+				AirCraft front = holdingPattern.dequeue(); 
+				landing.addPlane(front); // assiggn the front plane to the available runway
+				runways.swapFreeRunway(landing, OperatingMode.LANDING); // runway is no longer available, so swap from list of free runways to list of busy runways
+				front.setExitTime(Utils.convertTicksToDate(currentTime)); // set exit time as the time it exits the queue
+				exitedPlanes.add(front.getCallSign());
 			}
 		}
+	}
 
-
-
+	/** Retrieve all the planes that currently have an emergency status
+	* Check if they have been in emergency for longer than the maximum emergency wait time
+	* If so, divert them 
+	 * @param currentTime number of ticks elapsed so far
+	 */
+	private void handleDiversions(int currentTime){
 		ArrayList<AirCraft> emergencies = holdingPattern.getEmergencyPlanes();
-
-		for (AirCraft a : emergencies){
-			if ((currentTime - a.getEmergencyTime()) >= Utils.timeInc * 2){
-				// divert
+		for (AirCraft a : emergencies){ 
+			if ((currentTime - a.getEmergencyTime()) >= Utils.emergencyTime){
 				a.setExitTime(Utils.convertTicksToDate(currentTime));
 				a.setZoneStatus(AirCraft.ZoneStatus.DIVERT);
 			}
 		}
-
-		// updating other runways 
-		// first get a list of unavailable runways of each type
-		ArrayList<RunWay> busyArrivals = runways.getBusyArrive();
-		ArrayList<RunWay> busyDepart = runways.getBusyDepart();
-
-		// planes that have finished their time in the simulation
-
-
-		/**
-		 * instead of doing this, check entry time 
-		 */
-
-
-		ArrayList<String> exitedPlanes = new ArrayList<>();
-		//  TODO: need to update the exit times for these planes and their zones !!!
-		checkBusyRunways(busyArrivals, exitedPlanes, currentTime, OperatingMode.LANDING);
-		checkBusyRunways(busyDepart, exitedPlanes, currentTime, OperatingMode.TAKEOFF);
 	}
-	
-	private void checkBusyRunways(ArrayList<RunWay> runwayList, ArrayList<String> exits, int t, OperatingMode mode){
+
+	/**
+	 * check if the plane occupying each busy runway has passed its 'runway time' i.e. time taken to depart/arrive on the runway.
+	 * remove planes from runway if their runway time has elapsed. 
+	 * @param runwayList list of busy runways to be checked
+	 * @param t current time in ticks
+	 * @param mode operating mode of the runways being checked 
+	 */
+	private void checkBusyRunways(ArrayList<RunWay> runwayList, int t, OperatingMode mode){
 		AirCraft curr = null;
 		for (RunWay r : runwayList) {
 			curr = aircraftMap.get(r.getCurrentPlane());
@@ -125,9 +121,7 @@ public class TrafficController {
 				r.removePlane();
 				curr.setZoneStatus(ZoneStatus.EXIT);
 				runways.swapBusyRunway(r, mode);
-				exits.add(curr.getCallSign());
 			}
 		}
 	}
-	
 }
