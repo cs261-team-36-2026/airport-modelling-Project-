@@ -140,4 +140,9 @@ public class RunWayMap {
 		}
 	}
 
+	// returns all of the runways
+	public RunWay[] getAllRunways() {
+		// TODO test
+		return runways; 
+	}
 }
