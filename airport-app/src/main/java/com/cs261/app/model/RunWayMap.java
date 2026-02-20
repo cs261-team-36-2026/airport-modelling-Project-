@@ -10,14 +10,35 @@ import com.cs261.app.model.RunWay.OperationStatus;
  * Fixed size, can't or remove runways after simulation has been started/configuration of airport has been chosen
  */
 public class RunWayMap {
-    /*
-    TODO: extends hashmap. for now, just a constructor that does super() and nothing else. 
-    Alternatively could be an array list cause its just max 10 values
-    */
 	RunWay[] runways;
 	
+	ArrayList<RunWay> busyDepart;
+	ArrayList<RunWay> busyArrive;
+
+	ArrayList<RunWay> freeDepart;
+	ArrayList<RunWay> freeArrive;
+
 	public RunWayMap(RunWay[] runwayList) {
 		this.runways = runwayList;
+
+		busyDepart = new ArrayList<>();
+		busyArrive = new ArrayList<>();
+
+		freeArrive = new ArrayList<>();
+		freeDepart = new ArrayList<>();
+
+		// O(10)
+		for (int i = 0; i < runways.length; i++){
+			if (runways[i].getMixedModeTurn() == OperatingMode.LANDING){
+				freeArrive.add(runways[i]);
+			}
+		}
+
+		for (int i = 0; i < runways.length; i++){
+			if (runways[i].getMixedModeTurn() == OperatingMode.TAKEOFF){
+				freeDepart.add(runways[i]);
+			}
+		}
 	}
 		
 	/**
@@ -31,8 +52,30 @@ public class RunWayMap {
 		}
 		return null;
 	}
-	
-	
+	/**
+	 * @return Get list of free arrival runways
+	 */
+	public ArrayList<RunWay> getFreeArrive() {
+		return freeArrive;
+	}
+	/**
+	 * @return Get list of free departure runways
+	 */
+	public ArrayList<RunWay> getFreeDepart() {
+		return freeDepart;
+	}
+	/**
+	 * @return Get list of busy arrival runways
+	 */
+	public ArrayList<RunWay> getBusyArrive() {
+		return busyArrive;
+	}
+	/**
+	 * @return Get list of busy departure runways
+	 */
+	public ArrayList<RunWay> getBusyDepart() {
+		return busyDepart;
+	}
 	/**
 	 * Get first available runway of a specific type 
 	 * @param mode type of runway needed
