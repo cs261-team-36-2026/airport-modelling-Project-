@@ -25,7 +25,6 @@ public class SimLoop extends Task<IModelOutput>{
 	private TrafficController trafficModel;
 	private int runtime;
 	private int currentTime;
-	private int prevTime;
 	private DataGen dataGen;
 	
 	// TODO: add data gen and departure model
@@ -34,7 +33,6 @@ public class SimLoop extends Task<IModelOutput>{
 		this.runways = new RunWayMap(userRunways);
 		this.runtime = userRuntime;
 		this.currentTime = 0;
-		this.prevTime = 0;
 		this.aircraftMap = new AirCraftMap();
 		this.holdingPattern = new HoldingQueue(500);
 		// TODO: take off queue,datagen, departure model
@@ -50,9 +48,9 @@ public class SimLoop extends Task<IModelOutput>{
 			// get flights for this tick
 			List<AirCraft> newArrivals = dataGen.getArrivalsForTick(currentTime, currentTime+Utils.timeInc);
 			List<AirCraft> newDepartures = dataGen.getDeparturesForTick(currentTime, currentTime+Utils.timeInc);
-
-
 			// traffic controller update
+			trafficModel.updateTraffic(currentTime);
+
 			// arrivals update
 			arrivalModel.updateArrivals(null, currentTime);
 			// departures update

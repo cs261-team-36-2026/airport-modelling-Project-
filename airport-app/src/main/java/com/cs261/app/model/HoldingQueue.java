@@ -2,19 +2,20 @@ package com.cs261.app.model;
 
 import java.util.ArrayList;
 
+import com.cs261.app.model.AirCraft.EmergencyStatus;
 import com.cs261.app.model.AirCraft.FlightType;
 import java.util.HashSet;
 import java.util.Set;
 
 public class HoldingQueue {
-	AirCraft[] heap; // internally an array
+	HoldingEntry[] heap; // internally an array
 	int size;
 	int max;
 	int capacity;
 	
 	public HoldingQueue(int cap) {
 		this.capacity = cap;
-		heap = new AirCraft[cap];
+		heap = new HoldingEntry[cap];
 		max = 0;
 	}
 	
@@ -30,7 +31,7 @@ public class HoldingQueue {
 	 */
 	private void resize() {
 		capacity *= 2;
-		AirCraft[] newHeap = new AirCraft[capacity];
+		HoldingEntry[] newHeap = new HoldingEntry[capacity];
 		System.arraycopy(heap, 0, newHeap, 0, size);
 		this.heap = newHeap;
 		newHeap = null;
@@ -41,7 +42,7 @@ public class HoldingQueue {
 	 * @param j
 	 */
 	private void swap(int i, int j) {
-		AirCraft first = heap[i];
+		HoldingEntry first = heap[i];
 		heap[i] = heap[j];
 		heap[j] = first;
 		first = null;
@@ -51,7 +52,7 @@ public class HoldingQueue {
 	 * @param i
 	 * @return left child
 	 */
-	private AirCraft getLeft(int i) {
+	private HoldingEntry getLeft(int i) {
 		if (i >= (capacity / 2)) {
 			return null;
 		}
@@ -62,7 +63,7 @@ public class HoldingQueue {
 	 * @param i
 	 * @return right child
 	 */
-	private AirCraft getRight(int i) {
+	private HoldingEntry getRight(int i) {
 		if (i >= (capacity / 2)) {
 			return null;
 		}
@@ -73,7 +74,7 @@ public class HoldingQueue {
 	 * @param i
 	 * @return parent 
 	 */
-	private AirCraft getParent(int i) {
+	private HoldingEntry getParent(int i) {
 		if (i == 0) {
 			return null;
 		}
@@ -89,16 +90,18 @@ public class HoldingQueue {
 	 * add plane to holding queue and then sort priority
 	 * @param plane to be added
 	 */
-	public void enqueue(AirCraft plane) {
+	public void enqueue(int k, AirCraft plane) {
 		if (plane.getFlightType() != FlightType.ARRIVAL) {
 			return;
 		}
 		
+		HoldingEntry newEntry = new HoldingEntry(k, plane);
+
 		if (size >= capacity) {
 			resize();
 		}
 		
-		heap[size] = plane;
+		heap[size] = newEntry;
 		size++;
 		upHeap(size - 1);
 	}
@@ -107,23 +110,22 @@ public class HoldingQueue {
 	 * @return root of heap
 	 */
 	public AirCraft dequeue() {
-		AirCraft result = heap[0];
+		AirCraft result = heap[0].getAircraft();
 		heap[0] = heap[size - 1]; // move the lowest rightmost node on tree to here
 		heap[size - 1] = null; // no duplicate planes
 		downheap(0);
 		return result;
 	}
 	/**
-	 * basically if it is the same emegerency status, or less important (less important means higher integer emergency enum)
-	 * dont do anything
-	 * but if the ith node has a higher emergency status (lower value enum) then swap it with its parent
+	 * recursively moves i'th node up the heap if it is more important than its parent
 	 * @param i node you are moving up the tree
 	 */
 	private void upHeap(int i) {
 		if (i == 0) {
 			return;
 		}
-		if (heap[i].getEmergencyStatus().getStatusCode() < getParent(i).getEmergencyStatus().getStatusCode()) {
+		// if the i'th entry is more important, swap
+		if (heap[i].compareTo(getParent(i)) > 0){
 			int j = (int) (i - 1) / 2;
 			swap(i, j);
 			upHeap(j);
@@ -132,8 +134,7 @@ public class HoldingQueue {
 		}
 	}
 	/**
-	 * down heap when the root gets removed
-	 * if the root has a lower priority (as in HIGHER number) than a child, swap it with the highest priority child
+	 * recursively moves i'th node down the tree if it is less important than one of its children
 	 * @param i node to down heap from
 	 */
 	private void downheap(int i) {
@@ -143,13 +144,13 @@ public class HoldingQueue {
 		
 		// find child with the greatest emergency priority
 		int check = 0;
-		if (getLeft(i).getEmergencyStatus().getStatusCode() > getRight(i).getEmergencyStatus().getStatusCode()) {
+		if (getRight(i).compareTo(getLeft(i)) > 0){ // if right child node is more important than the left child node, compare it against parent
 			check = (2 * i) + 2;
 		} else {
-			check = (2 * i) + 1; // if theyre the same just check left
+			check = (2 * i) + 1; // if theyre the same or left is more important just check left
 		}
-		// if the node i is more important (strictly less)
-		if (heap[i].getEmergencyStatus().getStatusCode() < heap[check].getEmergencyStatus().getStatusCode()) {
+		// if the node i is strictly less important than its most important child, swap
+		if (heap[i].compareTo(heap[check]) < 0){
 			swap(i, check); // swap 
 			downheap(check); // new index of node i
 		} else {
@@ -164,7 +165,7 @@ public class HoldingQueue {
 	 */
 	public void updateHolding(int t) {
 		for (int i = 0; i < size; i++) {
-			if (heap[i].updateHoldingFlight(t)) {
+			if (heap[i].getAircraft().updateHoldingFlight(t)) {
 				upHeap(i); // might need to move it up the heap
 			} else { // no fuel emergency for now
 				continue;
@@ -179,7 +180,7 @@ public class HoldingQueue {
 		if (isEmpty()) {
 			return null;
 		} else {
-			return heap[0];
+			return heap[0].getAircraft();
 		}
 	}
 	
@@ -192,10 +193,10 @@ public class HoldingQueue {
 		ArrayList<AirCraft> temp = new ArrayList<>();
 		for (int i = 0; i < heap.length; i++){
 			// if the current node has a 0 emergency status, just stop
-			if (heap[i].getEmergencyStatus().getStatusCode() == 0){
+			if (heap[i].getAircraft().getEmergencyStatus().getStatusCode() == 0){
 				break;
 			} else {
-				temp.add(heap[i]);
+				temp.add(heap[i].getAircraft());
 			}
 		}
 
@@ -208,8 +209,51 @@ public class HoldingQueue {
 	public Set<String> getAircraftIds(){
 		Set<String> ids = new HashSet<>();
 		for (int i = 0; i < heap.length; i++){
-				ids.add(heap[i].getCallSign());
+				ids.add(heap[i].getAircraft().getCallSign());
 		}
 		return ids;
 	}	
+
+	/**
+	 * Inner class to store key and plane in holding queue
+	 */
+	private class HoldingEntry {
+		int serial; // what number arrival it is in the entire simulation
+		AirCraft plane;
+		
+		HoldingEntry(int s, AirCraft a){
+			serial = s;
+			plane = a;
+		}
+
+		private int getSerial(){
+			return this.serial;
+		}
+
+		private AirCraft getAircraft(){
+			return this.plane;
+		}
+
+		/**
+		 * @param other holding queue entry its being compared to
+		 * @return 1 if this plane is more important than the other plane, 0 if they are of equal importance, -1 if this plane is less important than the other one 
+		 */
+		private int compareTo(HoldingEntry other) {
+			// if one is in emergency and one is not, the plane in emergency is more important  
+			if (this.plane.getEmergencyStatus() == EmergencyStatus.NONE && other.getAircraft().getEmergencyStatus() != EmergencyStatus.NONE){
+				return -1;
+			}
+			if (this.plane.getEmergencyStatus() != EmergencyStatus.NONE && other.getAircraft().getEmergencyStatus() == EmergencyStatus.NONE){
+				return 1;
+			}
+			// if they both have no emergency, or if they both have an emergency, the plane that came into the simulation first is more important 
+			if (this.serial < other.getSerial()){
+				return 1;
+			} else if (this.serial > other.getSerial()){
+				return -1;
+			} else {
+				return 0;
+			}
+		}
+	}
 }

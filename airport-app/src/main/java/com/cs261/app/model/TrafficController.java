@@ -6,10 +6,6 @@ import com.cs261.app.model.RunWay.OperatingMode;
 
 
 public class TrafficController {
-	// TODO: add all data structures/
-	// TODO: constructor
-	// TODO: updateTraffic()..
-	
 	private AirCraftMap aircraftMap;
 	private RunWayMap runways;
 	private HoldingQueue holdingPattern;
@@ -29,7 +25,7 @@ public class TrafficController {
 		return modelOutput;
 	}
 
-	public void updateTraffic(int currentTime, int prevTime) {
+	public void updateTraffic(int currentTime) {
 		/**
 		 * FIX: need to think carefully about the times noted when there is no holding queue and available runways and airplane enters sim
 		 */
@@ -54,6 +50,7 @@ public class TrafficController {
 
 	// TODO: converting runways to mixed
 	// TODO: changing status of runways at specific times
+	// TODO: passing to output 
 
 	/**
 	 * Handles arrivals and holding queue according to the runway availability
