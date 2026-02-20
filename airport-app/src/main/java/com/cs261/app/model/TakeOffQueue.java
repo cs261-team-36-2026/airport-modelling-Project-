@@ -9,17 +9,25 @@ public class TakeOffQueue {
      * is there anything else we want the queue to do? TODO max takeoff queue length
      * test, calculate metrics here?
      * TODO return list of plane ids in order?
-     * TODO test getAircraftIds
+     * TODO test getAircraftIds, maxQueueLength
      */
 
     private LinkedList<AirCraft> queue;
+    private int maxQueueLength = 0;
 
     public TakeOffQueue() {
         this.queue = new LinkedList<>();
     }
+
     // adds aircraft to the back of the queue
     public void enqueue(AirCraft aircraft) {
         queue.addLast(aircraft);
+
+    // update maximum length if current size exceeds it
+    if (queue.size() > maxQueueLength) {
+        maxQueueLength = queue.size();
+    }
+
     }
 
     // removes aircraft from front of queue
@@ -37,6 +45,7 @@ public class TakeOffQueue {
         }
         return queue.get(index);
     }
+
     // checks if queue is empty
     public boolean isEmpty() {
         return queue.isEmpty();
@@ -54,6 +63,11 @@ public class TakeOffQueue {
             ids.add(plane.getCallSign());
         }
         return ids;
+    }
+
+    // returns the maximum takeoff queue length
+    public int getMaxQueueLength() {
+        return maxQueueLength;
     }
 //}
 

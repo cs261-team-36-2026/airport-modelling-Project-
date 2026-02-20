@@ -67,41 +67,48 @@ public class ModelOutput implements IModelOutput {
     // Metrics
     @Override
     public int getTotalArrivalsGenerated() {
+        // discuss if want this to incremented in data gen, or when they enter holding/takeoff queues
+        // similar to getTotalAircraftTakenOff() if when enter queues
         return 0;
     }
 
     @Override
     public int getTotalDeparturesGenerated() {
+        // discuss if want this to incremented in data gen, or when they enter holding/takeoff queues
         return 0;
     }
 
     @Override
     public int getTotalAircraftLanded() {
+        // ask afra about updateArrivals in ArrivalModel before changing (will be similar to mine in DepartureModel)
         return 0;
     }
 
     @Override
     public int getTotalAircraftTakenOff() {
-        return 0;
+        return departureModel.getTotalAircraftTakenOff();
     }
 
     @Override
     public int getMaxHoldingQueueLength() {
+        // TODO ask afra how to get max from holding queue
         return 0;
     }
 
     @Override
     public int getMaxTakeOffQueueLength() {
-        return 0;
+        return departureModel.getMaxTakeOffQueueLength();
     }
 
     @Override
     public double getAverageHoldingWaitTime() {
+        // TODO need to figure out how/where times enter/exit the queue is stored
         return 0.0;
     }
 
     @Override
     public double getAverageTakeOffWaitTime() {
+        // TODO need to figure out how/where times enter/exit the queue is stored
         return 0.0;
     }
 }
