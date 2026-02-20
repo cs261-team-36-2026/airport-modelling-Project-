@@ -25,11 +25,10 @@ public class ArrivalModel {
 		*/
 		
 		// add new planes 
-		totalArrivals += newPlanes.size();
 		Iterator<AirCraft> i = newPlanes.listIterator();
 		while (i.hasNext()){
 			AirCraft a = i.next();
-			holdingPattern.enqueue(a);	
+			holdingPattern.enqueue(totalArrivals++, a);	 // increment total arrivals and add plane to holding queue
 			aircraftMap.put(a);	
 		}
 		i = null;

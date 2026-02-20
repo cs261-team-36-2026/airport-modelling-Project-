@@ -33,23 +33,13 @@ public class AirCraft {
     }
 	/**
 	 * Represents the emergency status of the aircraft.
-	 * The value of each status represents its priority within a holding queue.
-	 * Priority(NONE) < Priority(HEALTH) < Priority(FUEL) < Priority(MECHP)
-	 * Lower values means higher priorty as the holding queue is a MIN-HEAP
 	 */
     public static enum EmergencyStatus {
-        NONE(0),
-        HEALTH(-1),
-        FUEL(-2),
-        MECH(-3),
+        NONE,
+        HEALTH,
+        FUEL,
+        MECH,
         ;
-        private final int statusCode;
-        private EmergencyStatus(int status){
-            this.statusCode = status;
-        }
-        public int getStatusCode(){
-            return statusCode;
-        }
     }
 
 

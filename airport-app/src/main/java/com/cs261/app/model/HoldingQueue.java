@@ -193,7 +193,7 @@ public class HoldingQueue {
 		ArrayList<AirCraft> temp = new ArrayList<>();
 		for (int i = 0; i < heap.length; i++){
 			// if the current node has a 0 emergency status, just stop
-			if (heap[i].getAircraft().getEmergencyStatus().getStatusCode() == 0){
+			if (heap[i].getAircraft().getEmergencyStatus() == EmergencyStatus.NONE){
 				break;
 			} else {
 				temp.add(heap[i].getAircraft());
