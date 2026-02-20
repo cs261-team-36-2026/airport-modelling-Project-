@@ -37,20 +37,16 @@ public class RunWay {
 	private String currentPlane; // occupying aircraft callsign
 	private OperationStatus status;
 	private OperatingMode mode;
-	private int timeSpent; // time current aircraft has spent on the runway
-	private AirCraftMap airCraftMap;
 
 	private OperatingMode mixedModeTurn;
 	
-	public RunWay(int length, int bearing, OperatingMode mode, OperationStatus status, AirCraftMap aircrafts) {
+	public RunWay(int length, int bearing, OperatingMode mode, OperationStatus status) {
 		this.length = length;
 		this.bearing = bearing;
 		this.mode = mode;
 		this.status = status;
 		this.currentPlane = "";
-		this.timeSpent = 0;
-		this.airCraftMap = aircrafts;
-		
+
 		int number = Math.round(bearing / 10.0f); // divide by 10 and round to round to nearest 10 degrees, and as math.round returns integer truncates last digit
 		if (number < 10 && number >= 0) { // convert to string, but add 0 if the rounded and truncated bearing is a single digit
 			runwayNumber = "0" + Integer.toString(number);
@@ -78,41 +74,6 @@ public class RunWay {
 	public String getCurrentPlane() {
 		return currentPlane;
 	}
-
-	/**
-	 * @param currentPlane the currentPlane to set
-	 */
-	public void addPlane(String currentPlane, AirCraft.EmergencyStatus status) {
-		AirCraft plane = airCraftMap.get(currentPlane);
-		if (plane.getFlightType().getCode() == mixedModeTurn.getCode()){
-			this.currentPlane = currentPlane;
-			plane.addToRunway(runwayNumber);
-			this.status = OperationStatus.UNAVAIL;
-
-			// switch mode of mixed runway, if there was no emergency 
-			if (this.mode == OperatingMode.MIXED && status == AirCraft.EmergencyStatus.NONE) {
-				if (this.mixedModeTurn == OperatingMode.LANDING) {
-					this.mixedModeTurn = OperatingMode.TAKEOFF;
-				} else {
-					this.mixedModeTurn = OperatingMode.LANDING;
-				}
-			}
-		}
-	}
-
-	/**
-	 * TODO: add error checking on this
-	 * remove plane
-	 * @return plane removed
-	 */
-	public String removePlane(){
-		String temp = this.currentPlane;
-		this.currentPlane = null;
-		this.status = OperationStatus.AVAILABLE;
-		return temp;
-	}
-
-
 
 	/**
 	 * @return the status
@@ -157,41 +118,37 @@ public class RunWay {
 	}
 
 	/**
-	 * @return the timeSpent
+	 * @param currentPlane the currentPlane to set
 	 */
-	public int getTimeSpent() {
-		return timeSpent;
+	public void addPlane(AirCraft plane) {
+		if (plane.getFlightType().getCode() == mixedModeTurn.getCode()){
+			this.currentPlane = plane.getCallSign();
+			plane.addToRunway(runwayNumber);
+			this.status = OperationStatus.UNAVAIL;
+
+			// switch mode of mixed runway, if there was no emergency 
+			if (this.mode == OperatingMode.MIXED && plane.getEmergencyStatus() == EmergencyStatus.NONE) {
+				if (this.mixedModeTurn == OperatingMode.LANDING) {
+					this.mixedModeTurn = OperatingMode.TAKEOFF;
+				} else {
+					this.mixedModeTurn = OperatingMode.LANDING;
+				}
+			}
+		}
 	}
-	
-	
-	/**
-	 *TODO: NEED: UPDATE TIME SPENT (SET/RESET/CHECK), SET MODE BY CONVERTING MODE (WHICH IS AN UPDATE METHOD), 
-	 */
 
 	/**
-	 * increment time spent by tick mins
-	 * @return true if it has been able to increase it, false if no increase because the time has elapsed
+	 * TODO: add error checking on this
+	 * remove plane
 	 * @return plane removed
 	 */
-	public String updateTime(){
-		if (timeSpent >= Constants.runwayTime || !hasPlane()){ // need to return the plane removed 
-			return resetTimeSpent();
-		}
-		else {
-			timeSpent += Constants.timeInc;
-			return null;
-		}
+	public String removePlane(){
+		String temp = this.currentPlane;
+		this.currentPlane = null;
+		this.status = OperationStatus.AVAILABLE;
+		return temp;
 	}
-	/**
-	 * TODO: add error checking for this
-	 * reset time spent to 0 and make plane exit the simulation
-	 * @return true if it has been able to reset it false otherwise
-	 * @return current plane removed if it is
-	 */
-	public String resetTimeSpent(){
-		this.timeSpent = 0;
-		return removePlane();
-	}
+
 
 	/**
 	 * checks if a plane is currently assigned

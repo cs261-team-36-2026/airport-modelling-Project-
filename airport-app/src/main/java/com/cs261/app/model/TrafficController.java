@@ -30,7 +30,7 @@ public class TrafficController {
 		return modelOutput;
 	}
 
-	public void updateTraffic(int currentTime, int privateTime) {
+	public void updateTraffic(int currentTime, int prevTime) {
 		// get stuff out of holding queue/
 		// get stuff out of take off queue
 		// check diversions/
@@ -64,7 +64,8 @@ public class TrafficController {
 			 * 		and traffic controller will divert them 
 			 */
 			AirCraft nextLand = holdingPattern.dequeue();
-			arrivalRunway.addPlane(nextLand.getCallSign(), nextLand.getEmergencyStatus());
+			arrivalRunway.addPlane(nextLand);
+			nextLand.setExitTime(Constants.convertTicksToDate(currentTime));
 			// does this in addPlane nextLand.addToRunway(arrivalRunway.getRunwayNumber());
 		} else {
 			if (holdingPattern.top().getEmergencyStatus() != AirCraft.EmergencyStatus.NONE){
@@ -72,7 +73,8 @@ public class TrafficController {
 				RunWay mixedAvail = runways.getMixedRunWay(); 
 				if (mixedAvail != null){ // land because theres one available
 					AirCraft nextLand = holdingPattern.dequeue();
-					mixedAvail.addPlane(nextLand.getCallSign(), nextLand.getEmergencyStatus());
+					mixedAvail.addPlane(nextLand);
+					nextLand.setExitTime(Constants.convertTicksToDate(currentTime));
 				} //else , we cant do anything apart from check what needs to be diverted
 			}
 		}
@@ -82,7 +84,7 @@ public class TrafficController {
 		for (AirCraft a : emergencies){
 			if (currentTime - a.getEmergencyTime() >= Constants.timeInc * 2){
 				// divert
-				// TODO: need to change exit time as well with some ticks to localdate time conversion method
+				a.setExitTime(Constants.convertTicksToDate(currentTime));
 				a.setZoneStatus(AirCraft.ZoneStatus.DIVERT);
 			}
 		}
@@ -110,6 +112,13 @@ public class TrafficController {
 		ArrayList<RunWay> busyDepart = runways.getBusyRunway(OperatingMode.TAKEOFF);
 
 		// planes that have finished their time in the simulation
+
+
+		/**
+		 * instead of doing this, check entry time 
+		 */
+
+
 		ArrayList<String> exitedPlanes = new ArrayList<>();
 		//  TODO: need to update the exit times for these planes and their zones !!!
 		for (RunWay r : busyArrivals) {
