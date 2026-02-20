@@ -17,10 +17,15 @@ public class ArrivalModel {
 	
 	public void updateArrivals(AirCraft newPlane, int currentTime, int prevTime) {
 		
+		/**
+		 * TODO: need to think about what to set emergency time as when it enters the sim as health/mech ie how to pass in current time
+		 * TODO: need to add stuff for output
+		*/
+
 		// increment the number of planes that have arrived ever
 		// increment the number of planes that have been in the holding queue 
 
-		holdingPattern.updateHolding();
+		holdingPattern.updateHolding(currentTime);
 	}
 
 	public Set<String> getHoldingPatternAircraftIds() {

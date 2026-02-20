@@ -1,14 +1,15 @@
 package com.cs261.app.model;
 
-import com.cs261.app.model.AirCraft.EmergencyStatus;
-
 public class RunWay {
+	/**
+	 * Represents the operating mode of the runway
+	 * The code each value represents to the same flight type in the AirCraft class.
+	 */
 	public static enum OperatingMode {
 		LANDING(1),
 		TAKEOFF(2),
 		MIXED(3),
 		;
-
 		private final int code;
 		private OperatingMode(int code){
 			this.code = code;
@@ -23,7 +24,6 @@ public class RunWay {
 		INSPECTION,
 		SNOW,
 		EQUIPFAIL,
-		UNAVAIL, // because plane is on it 
 		;
 	}
 	
@@ -41,7 +41,7 @@ public class RunWay {
 		this.bearing = bearing;
 		this.mode = mode;
 		this.status = status;
-		this.currentPlane = "";
+		this.currentPlane = null;
 		this.runwayNumber = calcID(bearing);
 		
 		if (mode == OperatingMode.MIXED) {
@@ -75,7 +75,6 @@ public class RunWay {
 		if (plane.getFlightType().getCode() == mixedModeTurn.getCode()){ // check the plane is of the correct type for the runway
 			this.currentPlane = plane.getCallSign();
 			plane.addToRunway(runwayNumber); // update plane with the runway it is occupying
-			this.status = OperationStatus.UNAVAIL; // runway is no longer available
 
 			if (this.mode == OperatingMode.MIXED) {
 				if (this.mixedModeTurn == OperatingMode.LANDING) {
@@ -88,8 +87,7 @@ public class RunWay {
 	}
 
 	/**
-	 * TODO: add error checking on this
-	 * remove plane
+	 * Remove plane that current occupies the runway
 	 * @return plane removed
 	 */
 	public String removePlane(){
@@ -99,9 +97,9 @@ public class RunWay {
 		return temp;
 	}
 
-
 	/**
-	 * checks if a plane is currently assigned
+	 * Checks if the current runway is occupied by a plane
+	 * @return true if it is, false otherwise
 	 */
 	public boolean hasPlane(){
 		if (currentPlane == null){
@@ -126,7 +124,7 @@ public class RunWay {
 	}
 
 	/**
-	 * @return the status
+	 * @return the operating status
 	 */
 	public OperationStatus getStatus() {
 		return status;
@@ -161,7 +159,7 @@ public class RunWay {
 	}
 
 	/**
-	 * @return the mode
+	 * @return the operating mode
 	 */
 	public OperatingMode getMode() {
 		return mode;

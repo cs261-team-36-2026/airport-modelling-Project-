@@ -122,9 +122,10 @@ public class RunWayMap {
 		}
 	}
 
-	// returns all of the runways
-	public RunWay[] getAllRunways() {
-		// TODO test
+	/**
+	 * @return list of all runways
+	 */
+	public RunWay[] getRunways() {
 		return runways; 
 	}
 }

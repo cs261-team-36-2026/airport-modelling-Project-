@@ -189,10 +189,11 @@ public class HoldingQueue {
 	/**
 	 * Traverse heap O(n)
 	 * worst case O(nlogn) if it so happens that every plane has a fuel emergency for some reason
+	 * @param t current time in simulation as # of ticks
 	 */
-	public void updateHolding() {
+	public void updateHolding(int t) {
 		for (int i = 0; i < size; i++) {
-			if (heap[i].updateHoldingFlight()) {
+			if (heap[i].updateHoldingFlight(t)) {
 				upHeap(i); // might need to move it up the heap
 			} else { // no fuel emergency for now
 				continue;

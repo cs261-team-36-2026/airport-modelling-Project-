@@ -43,7 +43,7 @@ public class ModelOutput implements IModelOutput {
     @Override
     public Map<String, String> getRunwayOccupancy() {
         Map<String, String> occupancies = new HashMap<>();
-        for (RunWay r : runways.getAllRunways()) {
+        for (RunWay r : runways.getRunways()) {
             String currentPlane;
             // gets current plane, or an empty string if there is none
             if (r.getCurrentPlane() != null) {
@@ -59,7 +59,7 @@ public class ModelOutput implements IModelOutput {
     @Override
     public Map<String, String> getRunwayModes() {
         Map<String, String> modes = new HashMap<>();
-        for (RunWay r : runways.getAllRunways()) {
+        for (RunWay r : runways.getRunways()) {
             modes.put(r.getRunwayNumber(), r.getMode().name()); // enum name here as string
         }
         return modes;
@@ -68,7 +68,7 @@ public class ModelOutput implements IModelOutput {
     @Override
     public Map<String, Boolean> getRunwayClosureStatus() {
         Map<String, Boolean> statuses = new HashMap<>();
-        for (RunWay r : runways.getAllRunways()) {
+        for (RunWay r : runways.getRunways()) {
             // returns true if runway is available, false if closed
             statuses.put(r.getRunwayNumber(), r.getStatus() == RunWay.OperationStatus.AVAILABLE);
         }
