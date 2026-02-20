@@ -52,30 +52,35 @@ public class RunWayMap {
 		}
 		return null;
 	}
+	
 	/**
 	 * @return Get list of free arrival runways
 	 */
 	public ArrayList<RunWay> getFreeArrive() {
 		return freeArrive;
 	}
+
 	/**
 	 * @return Get list of free departure runways
 	 */
 	public ArrayList<RunWay> getFreeDepart() {
 		return freeDepart;
 	}
+
 	/**
 	 * @return Get list of busy arrival runways
 	 */
 	public ArrayList<RunWay> getBusyArrive() {
 		return busyArrive;
 	}
+
 	/**
 	 * @return Get list of busy departure runways
 	 */
 	public ArrayList<RunWay> getBusyDepart() {
 		return busyDepart;
 	}
+
 	/**
 	 * Retrieve an available mixed runway regardless of its turn
 	 * @return
@@ -88,12 +93,14 @@ public class RunWayMap {
 		}
 		return null;
 	}
+
 	/**
 	 * @return number of runways 
 	 */
 	public int size(){
 		return runways.length;
 	}
+
 	/**
 	 * Make the specified runway switch from busy to free (ie removing airplane from it)
 	 * @param r to be switched

@@ -173,7 +173,7 @@ public class HoldingQueue {
 	}
 
 	/**
-	 * return first node in priority queue without removing it
+	 * @return first node in priority queue without removing it
 	 */
 	public AirCraft top(){
 		if (isEmpty()) {
@@ -185,7 +185,7 @@ public class HoldingQueue {
 	
 
 	/**
-	 * Get all the planes that are in emergency right now 
+	 * @return list of all the planes that are in emergency right now 
 	 */
 
 	public ArrayList<AirCraft> getEmergencyPlanes(){

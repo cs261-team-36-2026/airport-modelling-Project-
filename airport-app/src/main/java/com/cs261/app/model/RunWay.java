@@ -19,6 +19,9 @@ public class RunWay {
 		}
 	}
 	
+	/**
+	 * Represents the operational status of the runway
+	 */
 	public static enum OperationStatus {
 		AVAILABLE,
 		INSPECTION,
@@ -27,8 +30,8 @@ public class RunWay {
 		;
 	}
 	
-	private String runwayNumber; 
-	private int length;
+	private String runwayNumber; // runway number
+	private int length; // does not affect simulation
 	private int bearing;
 	private String currentPlane; // occupying aircraft callsign
 	private OperationStatus status;

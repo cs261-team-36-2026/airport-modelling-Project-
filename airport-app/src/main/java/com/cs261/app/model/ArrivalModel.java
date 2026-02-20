@@ -28,7 +28,9 @@ public class ArrivalModel {
 		totalArrivals += newPlanes.size();
 		Iterator<AirCraft> i = newPlanes.listIterator();
 		while (i.hasNext()){
-			holdingPattern.enqueue(i.next());	
+			AirCraft a = i.next();
+			holdingPattern.enqueue(a);	
+			aircraftMap.put(a);	
 		}
 		i = null;
 		holdingPattern.updateHolding(currentTime);

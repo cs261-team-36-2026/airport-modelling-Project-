@@ -52,6 +52,9 @@ public class TrafficController {
 		checkBusyRunways(busyDepart, currentTime, OperatingMode.TAKEOFF);
 	}
 
+	// TODO: converting runways to mixed
+	// TODO: changing status of runways at specific times
+
 	/**
 	 * Handles arrivals and holding queue according to the runway availability
 	 * Dequeue holding queue per available arrival runway.
