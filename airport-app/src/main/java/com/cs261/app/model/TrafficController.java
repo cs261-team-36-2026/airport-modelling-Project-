@@ -63,15 +63,7 @@ public class TrafficController {
 				if (mixed != null){ 
 					AirCraft front = holdingPattern.dequeue(); // airplane exits holding pattern
 					mixed.addPlane(front);
-
-					/** check what list the runway is on, and swap it to being unavailable. it remains on the list corresponding to the last turn. 
-					 * i.e. if it was on the available departure runway list, it will swap to the unavailable departure runway list, even though it is handling an arrival
-					 */ 
-					if (mixed.getMixedModeTurn() == OperatingMode.LANDING){
-						runways.swapFreeRunway(mixed, OperatingMode.LANDING); 
-					} else {
-						runways.swapFreeRunway(mixed, OperatingMode.TAKEOFF);
-					}
+					runways.swapFreeRunway(mixed, mixed.getMixedModeTurn());
 					front.setExitTime(Utils.convertTicksToDate(currentTime));
 					exitedPlanes.add(front.getCallSign());
 				} 
