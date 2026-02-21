@@ -15,7 +15,7 @@ public class Utils {
 	 */
 
 	public static LocalDateTime convertTicksToDate(int t){
-		LocalDateTime date = LocalDateTime.of(2026, 1, 1, 0, 0).plusMinutes(t*2);
+		LocalDateTime date = LocalDateTime.of(2026, 1, 1, 0, 0).plusMinutes(t * Utils.timeInc);
 		return date;
 	}
 
@@ -27,7 +27,7 @@ public class Utils {
 	public static int convertDateToTicks(LocalDateTime d){
 		LocalDateTime s = LocalDateTime.of(2026, 1, 1, 0, 0);
 		long mins = Duration.between(s, d).toMinutes();
-		int ticks = (int) mins / 2;
+		int ticks = (int) mins / Utils.timeInc;
 		return ticks;
 	}
 

@@ -1,6 +1,8 @@
 package com.cs261.app.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.cs261.app.model.RunWay.OperatingMode;
 import com.cs261.app.model.RunWay.OperationStatus;
@@ -126,6 +128,29 @@ public class RunWayMap {
 		} else {
 			freeDepart.remove(r);
 			busyDepart.add(r);
+		}
+	}
+
+	// for each runway check if it time to add status change
+	// for each runway check if it is time to remove status change
+
+	/**
+	 * Check if status change should be added for all runways
+	 * @param time
+	 */
+	public void addRunwaysStatusChange(int time){
+		for (RunWay r : runways){
+			r.addStatus(time);
+		}
+	}
+
+	/**
+	 * Check if the status change should be removed for all runways
+	 * @param time 
+	 */
+	public void removeRunWaysStatusChange(int time){
+		for (RunWay r : runways){
+			r.removeStatus(time);
 		}
 	}
 

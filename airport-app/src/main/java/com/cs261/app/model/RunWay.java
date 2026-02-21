@@ -1,5 +1,7 @@
 package com.cs261.app.model;
 
+import com.cs261.app.model.AirCraft.EmergencyStatus;
+
 public class RunWay {
 	/**
 	 * Represents the operating mode of the runway
@@ -38,15 +40,19 @@ public class RunWay {
 	private OperatingMode mode;
 
 	private OperatingMode mixedModeTurn;
+	private final OperationStatus changeStatusTo;
+	private final int[] changeStatusTimes; // changeStatusTimes[0] = start time, changeStatusTimes[1] = end time, in simulation ticks
 	
-	public RunWay(int length, int bearing, OperatingMode mode, OperationStatus status) {
+	public RunWay(int length, int bearing, OperatingMode mode, OperationStatus change, int[] timeAt) {
 		this.length = length;
 		this.bearing = bearing;
 		this.mode = mode;
-		this.status = status;
+		this.status = OperationStatus.AVAILABLE; // always starts as available
 		this.currentPlane = null;
 		this.runwayNumber = calcID(bearing);
-		
+		this.changeStatusTo = change;
+		this.changeStatusTimes = timeAt;
+
 		if (mode == OperatingMode.MIXED) {
 			this.mixedModeTurn = OperatingMode.LANDING; // mixed runways start with arrivals
 		} else {
@@ -109,6 +115,31 @@ public class RunWay {
 			return false;
 		} else {
 			return true;
+		}
+	}
+
+	/**
+	 * Change status to whatever the user input is at the right time
+	 * @param time number of ticks passed in simulation currently
+	 */
+	public void addStatus(int time){
+		if (changeStatusTo != null){
+			// if it should be changed within the intreval 
+			if (time <= changeStatusTimes[0] && changeStatusTimes[0] <= time + Utils.timeInc){
+				this.setStatus(changeStatusTo);
+			}
+		} 
+	}
+
+	/**
+	 * Change status back to available at the user inputted time
+	 * @param time current time in simulation
+	 */
+	public void removeStatus(int time){
+		if (changeStatusTo != null){
+			if (time <= changeStatusTimes[1] && changeStatusTimes[1] <= time + Utils.timeInc){
+				this.setStatus(OperationStatus.AVAILABLE);
+			}
 		}
 	}
 

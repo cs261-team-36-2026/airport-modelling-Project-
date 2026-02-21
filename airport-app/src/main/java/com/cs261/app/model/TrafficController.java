@@ -30,6 +30,9 @@ public class TrafficController {
 		 * FIX: need to think carefully about the times noted when there is no holding queue and available runways and airplane enters sim
 		 */
 
+		runways.addRunwaysStatusChange(currentTime);
+		runways.removeRunWaysStatusChange(currentTime);
+
 		ArrayList<RunWay> freeArrivals = runways.getFreeArrive(); // all available arrival runways (inc. mixed mode on arrival turn)
 		ArrayList<RunWay> freeDepart = runways.getFreeDepart(); // all available departure runways (inc. mixed mode runways on departure turn)
 
@@ -49,7 +52,7 @@ public class TrafficController {
 	}
 
 	// TODO: converting runways to mixed
-	// TODO: changing status of runways at specific times
+	// TODO: changing status of runways at specific times/
 	// TODO: passing to output 
 
 	/**
